@@ -1,0 +1,31 @@
+{
+    "package": {
+        "name": "vlingo-maven-plugin",
+        "repo": "vlingo-maven-plugin",
+        "subject": "vlingo-platform",
+        "desc": "Maven plugin supporting the vlingo/platform.",
+        "website_url": "https://github.com/vlingo/vlingo-maven-plugin",
+        "issue_tracker_url": "https://github.com/vlingo/vlingo-maven-plugin/issues",
+        "vcs_url": "https://github.com/vlingo/vlingo-maven-plugin.git",
+        "licenses": ["MPL-2.0"],
+        "public_download_numbers": true,
+        "public_stats": true
+    },
+
+    "version": {
+        "name": "master",
+        "gpgSign": false
+    },
+
+    "files": [
+        {
+            "includePattern": "target/(.*).jar",
+            "uploadPattern": "/vlingo-maven-plugin/master/$1.jar",
+            "matrixParams": {
+                "override": 1
+            }
+        }
+    ],
+
+    "publish": true
+}
