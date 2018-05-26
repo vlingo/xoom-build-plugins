@@ -8,13 +8,32 @@ Maven plugin supporting the vlingo platform.
 See vlingo-maven-plugin-test for examples.
 
 ### Bintray
+
 ```xml
-<dependency>
-  <groupId>io.vlingo</groupId>
-  <artifactId>vlingo-maven-plugin</artifactId>
-  <version>0.2.1</version>
-  <type>pom</type>
-</dependency>
+  <repositories>
+    <repository>
+      <id>jcenter</id>
+      <url>https://jcenter.bintray.com/</url>
+    </repository>
+  </repositories>
+  <dependencies>
+    <dependency>
+      <groupId>io.vlingo</groupId>
+      <artifactId>vlingo-maven-plugin</artifactId>
+      <version>0.2.2</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+```
+
+```gradle
+dependencies {
+    compile 'io.vlingo:vlingo-maven-plugin:0.2.2'
+}
+
+repositories {
+    jcenter()
+}
 ```
 
 License (See LICENSE file for full license)

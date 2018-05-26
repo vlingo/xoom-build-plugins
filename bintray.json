@@ -13,21 +13,21 @@
     },
 
     "version": {
-        "name": "0.2.1",
+        "name": "0.2.2",
         "gpgSign": false
     },
 
     "files": [
         {
             "includePattern": "target/(.*).jar",
-            "uploadPattern": "/io/vlingo/vlingo-maven-plugin/0.2.1/$1.jar",
+            "uploadPattern": "/io/vlingo/vlingo-maven-plugin/0.2.2/$1.jar",
             "matrixParams": {
                 "override": 1
             }
         },
         {
             "includePattern": "pom.xml",
-            "uploadPattern": "/io/vlingo/vlingo-maven-plugin/0.2.1/vlingo-maven-plugin-0.2.1.pom",
+            "uploadPattern": "/io/vlingo/vlingo-maven-plugin/0.2.2/vlingo-maven-plugin-0.2.2.pom",
             "matrixParams": {
                 "override": 1
             }
