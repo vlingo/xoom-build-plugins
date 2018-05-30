@@ -14,7 +14,7 @@
 
     "version": {
         "name": "0.2.2",
-        "gpgSign": false
+        "gpgSign": true
     },
 
     "files": [
