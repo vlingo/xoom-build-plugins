@@ -20,7 +20,7 @@ See vlingo-maven-plugin-test for examples.
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-maven-plugin</artifactId>
-      <version>0.2.3</version>
+      <version>0.2.4</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>
@@ -28,7 +28,7 @@ See vlingo-maven-plugin-test for examples.
 
 ```gradle
 dependencies {
-    compile 'io.vlingo:vlingo-maven-plugin:0.2.3'
+    compile 'io.vlingo:vlingo-maven-plugin:0.2.4'
 }
 
 repositories {
