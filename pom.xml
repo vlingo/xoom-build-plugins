@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-maven-plugin</artifactId>
-  <version>0.7.0</version>
+  <version>0.7.1</version>
   <packaging>maven-plugin</packaging>
   <name>vlingo-maven-plugin</name>
   <description>Maven plugin supporting the vlingo platform.</description>
@@ -87,7 +87,7 @@
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-actors</artifactId>
-      <version>0.7.0</version>
+      <version>0.7.1</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
