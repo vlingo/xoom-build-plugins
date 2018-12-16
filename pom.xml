@@ -34,25 +34,51 @@
   </scm>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
-  </properties>
+   </properties>
   <build>
     <plugins>
+		<plugin>
+            <!-- To find latest plugin or dependency version: mvn versions:display-plugin-updates -->
+		    <groupId>org.codehaus.mojo</groupId>
+		    <artifactId>versions-maven-plugin</artifactId>
+		    <version>2.7</version>
+		    <configuration>
+		        <generateBackupPoms>false</generateBackupPoms>
+		    </configuration>
+		</plugin>
+		<plugin>
+		    <groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-compiler-plugin</artifactId>
+		    <version>3.8.0</version>
+		    <configuration>
+		        <release>11</release>
+		    </configuration>
+		</plugin>
+		<plugin>
+		    <groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-failsafe-plugin</artifactId>
+		    <version>3.0.0-M2</version>
+		    <configuration>
+		        <!-- Allow reflection access for third party libraries -->
+		        <argLine>--illegal-access=permit</argLine>
+		    </configuration>
+		</plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
-        <version>3.4</version>
+        <version>3.6.0</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.21.0</version>
+        <version>3.0.0-M2</version>
         <configuration>
           <systemPropertyVariables>
             <propertyName>firefox</propertyName>
           </systemPropertyVariables>
           <argLine>-Xmx1024m</argLine>
+          <!-- Allow reflection access for third party libraries -->
+          <argLine>--illegal-access=permit</argLine>
         </configuration>
       </plugin>
       <plugin>
@@ -71,7 +97,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>3.0.0</version>
+        <version>3.0.1</version>
         <executions>
           <execution>
             <id>attach-javadocs</id>
@@ -92,12 +118,12 @@
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
-      <version>3.0</version>
+      <version>3.6.0</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
-      <version>3.4</version>
+      <version>3.6.0</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
