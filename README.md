@@ -1,7 +1,7 @@
 # vlingo-maven-plugin
 
 
-[![Javadocs](http://javadoc.io/badge/io.vlingo/vlingo-maven-plugin.svg?color=brightgreen)](http://javadoc.io/doc/io.vlingo/vlingo-maven-plugin) [![Build Status](https://travis-ci.org/vlingo/vlingo-maven-plugin-test.svg?branch=master)](https://travis-ci.org/vlingo/vlingo-maven-plugin-test) [ ![Download](https://api.bintray.com/packages/vlingo/vlingo-platform-java/vlingo-maven-plugin/images/download.svg) ](https://bintray.com/vlingo/vlingo-platform-java/vlingo-maven-plugin/_latestVersion)
+[![Javadocs](http://javadoc.io/badge/io.vlingo/vlingo-maven-plugin.svg?color=brightgreen)](http://javadoc.io/doc/io.vlingo/vlingo-maven-plugin) [![Build Status](https://travis-ci.org/vlingo/vlingo-maven-plugin-test.svg?branch=master)](https://travis-ci.org/vlingo/vlingo-maven-plugin-test) [ ![Download](https://api.bintray.com/packages/vlingo/vlingo-platform-java/vlingo-maven-plugin/images/download.svg) ](https://bintray.com/vlingo/vlingo-platform-java/vlingo-maven-plugin/_latestVersion) [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/vlingo-platform-java/community)
 
 Maven plugin supporting the vlingo platform.
 
