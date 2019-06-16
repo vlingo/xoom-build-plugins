@@ -15,26 +15,27 @@ import io.vlingo.actors.ProxyGenerator;
 
 @Mojo(name="actorProxyGen")
 public class ActorProxyGenerator extends AbstractMojo {
-  
+
   @org.apache.maven.plugins.annotations.Parameter(required=true)
   private String[] actorProtocols;
   private final io.vlingo.actors.Logger logger;
 
   public ActorProxyGenerator() {
-    this.logger = io.vlingo.actors.Logger.testLogger();
-    logger.log("vlingo/maven: Actor proxy generator loaded.");
+    this.logger = io.vlingo.actors.Logger.basicLogger();
+    logger.info("vlingo/maven: Actor proxy generator loaded.");
   }
 
+  @Override
   public void execute() throws MojoExecutionException {
     try (final ProxyGenerator generator = ProxyGenerator.forMain(true, logger)) {
       for (final String actorProtocol : actorProtocols) {
-        logger.log("vlingo/maven: Generating proxy for: " + actorProtocol);
+        logger.info("vlingo/maven: Generating proxy for: " + actorProtocol);
         generator.generateFor(actorProtocol);
-        logger.log("vlingo/maven: Generation done.");
+        logger.info("vlingo/maven: Generation done.");
       }
     } catch (Exception e) {
       final String message = "Proxy generator failed because: " + e.getMessage();
-      logger.log(message, e);
+      logger.error(message, e);
       e.printStackTrace();
       throw new MojoExecutionException(message, e);
     }
