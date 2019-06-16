@@ -1,12 +1,12 @@
 {
     "package": {
-        "name": "vlingo-maven-plugin",
+        "name": "vlingo-build-plugins",
         "repo": "vlingo-platform-java",
         "subject": "vlingo",
-        "desc": "Provides vlingo/platform central 'build all' and other control.",
-        "website_url": "https://github.com/vlingo/vlingo-maven-plugin",
-        "issue_tracker_url": "https://github.com/vlingo/vlingo-maven-plugin/issues",
-        "vcs_url": "https://github.com/vlingo/vlingo-maven-plugin.git",
+        "desc": "Maven plugin supporting the vlingo platform.",
+        "website_url": "https://github.com/vlingo/vlingo-build-plugins",
+        "issue_tracker_url": "https://github.com/vlingo/vlingo-build-plugins/issues",
+        "vcs_url": "https://github.com/vlingo/vlingo-build-plugins.git",
         "licenses": ["MPL-2.0"],
         "public_download_numbers": true,
         "public_stats": true
@@ -20,14 +20,14 @@
     "files": [
         {
             "includePattern": "target/(.*).jar",
-            "uploadPattern": "/io/vlingo/vlingo-maven-plugin/0.8.4/$1.jar",
+            "uploadPattern": "/io/vlingo/vlingo-build-plugins/0.8.4/$1.jar",
             "matrixParams": {
                 "override": 1
             }
         },
         {
             "includePattern": "pom.xml",
-            "uploadPattern": "/io/vlingo/vlingo-maven-plugin/0.8.4/vlingo-maven-plugin-0.8.4.pom",
+            "uploadPattern": "/io/vlingo/vlingo-build-plugins/0.8.4/vlingo-build-plugins-0.8.4.pom",
             "matrixParams": {
                 "override": 1
             }
