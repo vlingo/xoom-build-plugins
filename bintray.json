@@ -3,7 +3,7 @@
         "name": "vlingo-build-plugins",
         "repo": "vlingo-platform-java",
         "subject": "vlingo",
-        "desc": "Maven plugin supporting the vlingo platform.",
+        "desc": "Build plugin supporting the vlingo platform.",
         "website_url": "https://github.com/vlingo/vlingo-build-plugins",
         "issue_tracker_url": "https://github.com/vlingo/vlingo-build-plugins/issues",
         "vcs_url": "https://github.com/vlingo/vlingo-build-plugins.git",
@@ -20,14 +20,14 @@
     "files": [
         {
             "includePattern": "target/(.*).jar",
-            "uploadPattern": "/io/vlingo/vlingo-build-plugins/0.8.4/$1.jar",
+            "uploadPattern": "/io/vlingo/vlingo-build-plugins/0.8.5/$1.jar",
             "matrixParams": {
                 "override": 1
             }
         },
         {
             "includePattern": "pom.xml",
-            "uploadPattern": "/io/vlingo/vlingo-build-plugins/0.8.4/vlingo-build-plugins-0.8.4.pom",
+            "uploadPattern": "/io/vlingo/vlingo-build-plugins/0.8.5/vlingo-build-plugins-0.8.5.pom",
             "matrixParams": {
                 "override": 1
             }
