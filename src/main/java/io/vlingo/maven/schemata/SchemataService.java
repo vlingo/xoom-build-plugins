@@ -2,20 +2,20 @@ package io.vlingo.maven.schemata;
 
 import java.net.URL;
 
-public class Schemata {
+public class SchemataService {
 
-    URL serviceUrl;
+    private URL url;
 
-    String clientOrganization;
+    private String clientOrganization;
 
-    String clientUnit;
+    private String clientUnit;
 
-    public URL getServiceUrl() {
-        return serviceUrl;
+    public URL getUrl() {
+        return url;
     }
 
-    public void setServiceUrl(URL serviceUrl) {
-        this.serviceUrl = serviceUrl;
+    public void setUrl(URL url) {
+        this.url = url;
     }
 
     public String getClientOrganization() {
@@ -36,8 +36,8 @@ public class Schemata {
 
     @Override
     public String toString() {
-        return "Schemata{" +
-                "serviceUrl=" + serviceUrl +
+        return "SchemataService{" +
+                "url=" + url +
                 ", clientOrganization='" + clientOrganization + '\'' +
                 ", clientUnit='" + clientUnit + '\'' +
                 '}';

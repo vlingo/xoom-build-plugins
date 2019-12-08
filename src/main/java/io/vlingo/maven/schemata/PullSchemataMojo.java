@@ -9,26 +9,26 @@ package io.vlingo.maven.schemata;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
 
-@Mojo(name = "schemata", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
-public class SchemataMojo extends AbstractMojo {
+@Mojo(name = "pull-schemata", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
+public class PullSchemataMojo extends AbstractMojo {
 
-    @Parameter(name = "schemata")
-    private Schemata schemata;
+    @Parameter(name = "schemataService")
+    private SchemataService schemataService;
 
     private final io.vlingo.actors.Logger logger;
 
-    public SchemataMojo() {
+    public PullSchemataMojo() {
         this.logger = io.vlingo.actors.Logger.basicLogger();
-        logger.info("vlingo/maven: SchemataMojo loader activated.");
+        logger.info("vlingo/maven: Pulling code generated from vlingo/schemata registry.");
     }
 
     @Override
     public void execute() throws MojoExecutionException {
-        logger.info(schemata.toString());
+        logger.info(schemataService.toString());
     }
 }
