@@ -17,8 +17,12 @@ import org.apache.maven.plugins.annotations.Parameter;
 @Mojo(name = "push-schemata", defaultPhase = LifecyclePhase.INSTALL)
 public class PushSchemataMojo extends AbstractMojo {
 
-    @Parameter(name = "schemataService")
+    @Parameter(name = "schemataService", required = true)
     private SchemataService schemataService;
+
+
+    @Parameter(name = "publications", required = true)
+    private Publications publications;
 
     private final io.vlingo.actors.Logger logger;
 
@@ -30,5 +34,6 @@ public class PushSchemataMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException {
         logger.info(schemataService.toString());
+        logger.info(publications.toString());
     }
 }
