@@ -26,6 +26,12 @@
       <organization>Dmitry Ledentsov</organization>
       <organizationUrl>https://github.com/d-led</organizationUrl>
     </developer>
+    <developer>
+      <name>Wolfgang Werner</name>
+      <email>wolfgang.werner@gmail.com</email>
+      <organization>Wolfgang Werner</organization>
+      <organizationUrl>https://wolfgang-werner.net</organizationUrl>
+    </developer>
   </developers>
   <scm>
     <connection>scm:git:git://github.com/vlingo/vlingo-build-plugins.git</connection>
