@@ -21,8 +21,8 @@ public class PushSchemataMojo extends AbstractMojo {
     private SchemataService schemataService;
 
 
-    @Parameter(name = "publications", required = true)
-    private Publications publications;
+    @Parameter(name = "schemata", required = true)
+    private Schemata schemata;
 
     private final io.vlingo.actors.Logger logger;
 
@@ -34,6 +34,6 @@ public class PushSchemataMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoExecutionException {
         logger.info(schemataService.toString());
-        logger.info(publications.toString());
+        logger.info(schemata.toString());
     }
 }
