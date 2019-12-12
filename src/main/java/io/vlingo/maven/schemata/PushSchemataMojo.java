@@ -13,16 +13,18 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Parameter;
 
+import java.util.List;
+
 
 @Mojo(name = "push-schemata", defaultPhase = LifecyclePhase.INSTALL)
 public class PushSchemataMojo extends AbstractMojo {
 
-    @Parameter(name = "schemataService", required = true)
+    @Parameter(name = "schemataService")
     private SchemataService schemataService;
 
 
-    @Parameter(name = "schemata", required = true)
-    private Schemata schemata;
+    @Parameter(property = "schemata")
+    private List<Schema> schemata;
 
     private final io.vlingo.actors.Logger logger;
 
