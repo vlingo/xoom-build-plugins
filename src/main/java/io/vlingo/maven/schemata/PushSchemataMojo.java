@@ -75,11 +75,15 @@ public class PushSchemataMojo extends AbstractMojo {
 
     private String generateDescription(String reference, String project) {
         StringBuilder description = new StringBuilder();
-        description.append("Schema ");
+        description.append("# ");
         description.append(reference);
-        description.append(" pushed from ");
+        description.append("\n\n");
+        description.append("Schema `");
+        description.append(reference);
+        description.append("` pushed from `");
         description.append(project);
-        description.append(" on ");
+        description.append("`.\n\n");
+        description.append("Publication date: ");
         description.append(LocalDateTime.now().toString());
 
         return description.toString();
