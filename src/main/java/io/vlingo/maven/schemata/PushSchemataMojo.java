@@ -15,9 +15,7 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -61,7 +59,7 @@ public class PushSchemataMojo extends AbstractMojo {
 
             try {
                 String specification = new String(Files.readAllBytes(sourceFile.toPath()));
-                String previousVersion = "0.0.0"; // FIXME: configure prevVersion in publisher pom
+                String previousVersion = schema.getPreviousVersion() == null ? "0.0.0" : schema.getPreviousVersion();
 
                 String payload = this.payloadFrom(specification, previousVersion, description);
                 this.push(reference, payload);
@@ -111,6 +109,15 @@ public class PushSchemataMojo extends AbstractMojo {
         if (HttpResult == HttpURLConnection.HTTP_CREATED) {
             logger.info("Successfully pushed {}", schemaVersionUrl);
         } else {
+            try(BufferedReader br = new BufferedReader(
+                    new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+                StringBuilder response = new StringBuilder();
+                String responseLine = null;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+                logger.error("Pushing the schema version failed: {}", response.toString());
+            }
             throw new MojoExecutionException(
                     "Could not push " + reference
                             + " to " + schemaVersionUrl

@@ -11,6 +11,9 @@ public class Schema {
     @Parameter(property = "ref", required = true)
     private String ref;
 
+    @Parameter(property = "previousVersion")
+    private String previousVersion;
+
     public File getSrc() {
         return src;
     }
@@ -27,11 +30,20 @@ public class Schema {
         this.ref = ref;
     }
 
+    public String getPreviousVersion() {
+        return previousVersion;
+    }
+
+    public void setPreviousVersion(String previousVersion) {
+        this.previousVersion = previousVersion;
+    }
+
     @Override
     public String toString() {
         return "Schema{" +
                 "src=" + src +
                 ", ref='" + ref + '\'' +
+                ", previousVersion='" + previousVersion + '\'' +
                 '}';
     }
 }
