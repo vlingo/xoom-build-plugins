@@ -3,7 +3,6 @@ package io.vlingo.maven.schemata;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Parameter;
 
-import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 

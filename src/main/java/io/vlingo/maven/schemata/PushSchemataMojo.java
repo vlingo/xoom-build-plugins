@@ -22,7 +22,6 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -122,7 +121,7 @@ public class PushSchemataMojo extends AbstractMojo {
         if (HttpResult == HttpURLConnection.HTTP_CREATED) {
             logger.info("Successfully pushed {}", schemaVersionUrl);
         } else {
-            try(BufferedReader br = new BufferedReader(
+            try (BufferedReader br = new BufferedReader(
                     new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
                 StringBuilder response = new StringBuilder();
                 String responseLine = null;
