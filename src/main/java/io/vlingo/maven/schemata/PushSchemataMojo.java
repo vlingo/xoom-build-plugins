@@ -21,6 +21,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -33,6 +35,9 @@ public class PushSchemataMojo extends AbstractMojo {
 
     @Parameter(readonly = true, defaultValue = "${project}")
     private MavenProject project;
+
+    @Parameter(name = "srcDirectory", defaultValue = "src/main/vlingo/schemata", required = true)
+    private File srcDirectory;
 
     @Parameter(name = "schemataService")
     private SchemataService schemataService;
@@ -54,18 +59,22 @@ public class PushSchemataMojo extends AbstractMojo {
 
         for (Schema schema : this.schemata) {
             String reference = schema.getRef();
-            File sourceFile = schema.getSrc();
+
+            Path sourceFile =
+                    srcDirectory.toPath()
+                            .resolve(schema.getSrc());
+
             String description = this.generateDescription(reference, this.project.getArtifact().toString());
 
             try {
-                String specification = new String(Files.readAllBytes(sourceFile.toPath()));
+                String specification = new String(Files.readAllBytes(sourceFile));
                 String previousVersion = schema.getPreviousVersion() == null ? "0.0.0" : schema.getPreviousVersion();
 
                 String payload = this.payloadFrom(specification, previousVersion, description);
                 this.push(reference, payload);
             } catch (IOException e) {
                 throw new MojoExecutionException(
-                        "Schema specification " + sourceFile.getAbsolutePath() +
+                        "Schema specification " + sourceFile.toAbsolutePath() +
                                 " could not be pushed to " + schemataService.getUrl()
                         , e);
             }
