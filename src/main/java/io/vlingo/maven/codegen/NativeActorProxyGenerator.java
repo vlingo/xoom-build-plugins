@@ -29,9 +29,9 @@ import static java.util.stream.Collectors.toSet;
 public class NativeActorProxyGenerator extends AbstractMojo {
   private static final Path REFLECTION_JSON = new File("target/classes/reflection.json").toPath();
 
-  @org.apache.maven.plugins.annotations.Parameter(required=true)
+  @Parameter(required=true)
   private String sourceRoot;
-  @org.apache.maven.plugins.annotations.Parameter(defaultValue = "[]")
+  @Parameter()
   private String[] additionalProtocols;
 
   private final io.vlingo.actors.Logger logger;
@@ -45,14 +45,17 @@ public class NativeActorProxyGenerator extends AbstractMojo {
   public void execute() throws MojoExecutionException {
     final ProtocolScanner scanner = new ProtocolScanner(new File(sourceRoot));
     final Set<String> protocolsAndProxies = new HashSet<>(scanner.scan());
-    protocolsAndProxies.addAll(Arrays.asList(additionalProtocols));
-
     final ProxyGenerator proxyGenerator = newGenerator();
     final NativeImageReflectionConfigurationGenerator reflectionConfigurationGenerator = new NativeImageReflectionConfigurationGenerator(protocolsAndProxies);
     final Set<String> actorProtocols = protocolsAndProxies.stream().filter(className -> !className.endsWith("__Proxy")).collect(toSet());
 
     try {
       actorProtocols.forEach(proxyGenerator::generateFor);
+
+      if (additionalProtocols != null) {
+        protocolsAndProxies.addAll(Arrays.asList(additionalProtocols));
+      }
+
       Files.write(REFLECTION_JSON, reflectionConfigurationGenerator.generate().getBytes());
     } catch (Exception e) {
       final String message = "Proxy generator failed because: " + e.getMessage();
