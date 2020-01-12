@@ -12,11 +12,12 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
 
 import io.vlingo.actors.ProxyGenerator;
+import org.apache.maven.plugins.annotations.Parameter;
 
 @Mojo(name="actorProxyGen")
 public class ActorProxyGenerator extends AbstractMojo {
 
-  @org.apache.maven.plugins.annotations.Parameter(required=true)
+  @Parameter(required=true)
   private String[] actorProtocols;
   private final io.vlingo.actors.Logger logger;
 
