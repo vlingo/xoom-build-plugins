@@ -9,6 +9,7 @@ package io.vlingo.maven.schemata;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -26,14 +27,17 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 
 @Mojo(name = "pull-schemata", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class PullSchemataMojo extends AbstractMojo {
 
     public static final String SCHEMATA_CODE_RESOURCE_PATH = "/code/%s/%s";
+    public static final String SCHEMATA_SCHEMA_VERSION_RESOURCE_PATH = "/versions/%s/status";
     public static final String SCHEMATA_REFERENCE_SEPARATOR = ":";
     Pattern PACKAGE_NAME_PATTERN = Pattern.compile("package (.+);.*");
 
@@ -58,7 +62,7 @@ public class PullSchemataMojo extends AbstractMojo {
     }
 
     @Override
-    public void execute() throws MojoExecutionException {
+    public void execute() throws MojoExecutionException, MojoFailureException {
         logger.info(schemataService.toString());
         this.project.addCompileSourceRoot(this.outputDirectory.toString());
         try {
@@ -72,8 +76,11 @@ public class PullSchemataMojo extends AbstractMojo {
         }
     }
 
-    private String pullSource(String schemaReference) throws IOException {
+    private String pullSource(String schemaReference) throws IOException, MojoFailureException {
         URL codeResourceUrl = codeResourceUrl(this.schemataService.getUrl(), schemaReference, "java");
+
+        validateSchemaStatus(schemaReference);
+
 
         logger.info("Pulling {} from {}", schemaReference, codeResourceUrl);
         URLConnection connection = codeResourceUrl.openConnection();
@@ -90,6 +97,32 @@ public class PullSchemataMojo extends AbstractMojo {
         }
         logger.info("Pulled {}", schemaReference);
         return sources.toString();
+    }
+
+    private void validateSchemaStatus(String schemaReference) throws IOException, MojoFailureException {
+        URL versionResourceUrl = versionDataUrl(this.schemataService.getUrl(), schemaReference);
+        logger.info("Retrieving version data for {} from {}", schemaReference, versionResourceUrl);
+
+        URLConnection connection = versionResourceUrl.openConnection();
+        connection.setRequestProperty("Accept", "application/json, text/plain");
+        String status = readString(connection);
+
+        switch(status) {
+            case "Published":
+                // do nothing, this is the happy case
+                break;
+            case "Draft":
+            case "Deprecated":
+                logger.warn( "{} status is '{}': don't use in production builds", schemaReference, status);
+                break;
+            case "Removed":
+                logger.error( "{} status is '{}' and may no longer be used", schemaReference, status);
+                throw new MojoFailureException(schemaReference + " has reached the end of its life cycle");
+            default:
+                logger.error("Unknown status " + status +". Are you using matching versions of vlingo-schemata and the build plugins?");
+
+        }
+
     }
 
     private void writeSourceFile(String schemaReference, String source) throws IOException {
@@ -130,7 +163,22 @@ public class PullSchemataMojo extends AbstractMojo {
         return parts[3];
     }
 
+    private static String readString(URLConnection connection) throws IOException
+    {
+        String data = "";
+        try (
+          BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))
+        ) {
+            data = reader.lines().collect(Collectors.joining("\n"));
+        }
+        return data;
+    }
+
     private URL codeResourceUrl(URL baseUrl, String schemaReference, String language) throws MalformedURLException {
         return new URL(baseUrl, String.format(SCHEMATA_CODE_RESOURCE_PATH, schemaReference, language));
+    }
+
+    private URL versionDataUrl(URL baseUrl, String schemaReference) throws MalformedURLException {
+        return new URL(baseUrl, String.format(SCHEMATA_SCHEMA_VERSION_RESOURCE_PATH, schemaReference));
     }
 }
