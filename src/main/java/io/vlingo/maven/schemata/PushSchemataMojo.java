@@ -122,7 +122,7 @@ public class PushSchemataMojo extends AbstractMojo {
             logger.info("Successfully pushed {}", schemaVersionUrl);
         } else {
             try (BufferedReader br = new BufferedReader(
-                    new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+                    new InputStreamReader(connection.getErrorStream(), StandardCharsets.UTF_8))) {
                 StringBuilder response = new StringBuilder();
                 String responseLine = null;
                 while ((responseLine = br.readLine()) != null) {
