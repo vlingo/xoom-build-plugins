@@ -10,9 +10,9 @@ package io.vlingo.maven.codegen;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 
 import io.vlingo.actors.ProxyGenerator;
-import org.apache.maven.plugins.annotations.Parameter;
 
 @Mojo(name="actorProxyGen")
 public class ActorProxyGenerator extends AbstractMojo {
@@ -28,7 +28,7 @@ public class ActorProxyGenerator extends AbstractMojo {
 
   @Override
   public void execute() throws MojoExecutionException {
-    try (final ProxyGenerator generator = ProxyGenerator.forMain(true, logger)) {
+    try (final ProxyGenerator generator = ProxyGenerator.forMain(getClass().getClassLoader(), true, logger)) {
       for (final String actorProtocol : actorProtocols) {
         logger.info("vlingo/maven: Generating proxy for: " + actorProtocol);
         generator.generateFor(actorProtocol);
