@@ -7,7 +7,20 @@
 
 package io.vlingo.maven.codegen;
 
-import io.vlingo.actors.ProxyGenerator;
+import static java.util.stream.Collectors.toSet;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -17,15 +30,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
-import static java.util.stream.Collectors.toSet;
+import io.vlingo.actors.ProxyGenerator;
 
 @Mojo(name="nativeActorProxyGen", defaultPhase = LifecyclePhase.GENERATE_SOURCES, requiresDependencyCollection = ResolutionScope.COMPILE_PLUS_RUNTIME, requiresDependencyResolution = ResolutionScope.COMPILE_PLUS_RUNTIME)
 public class NativeActorProxyGenerator extends AbstractMojo {
@@ -72,7 +77,7 @@ public class NativeActorProxyGenerator extends AbstractMojo {
 
   private ProxyGenerator newGenerator() throws MojoExecutionException {
     try {
-      return ProxyGenerator.forMain(true, logger);
+      return ProxyGenerator.forMain(getClass().getClassLoader(), true, logger);
     } catch (Exception e) {
       final String message = "Proxy generator failed because: " + e.getMessage();
       logger.error(message, e);
