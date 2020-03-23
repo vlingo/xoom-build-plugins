@@ -7,15 +7,11 @@
 
 package io.vlingo.maven.schemata;
 
-import com.google.gson.Gson;
-import org.apache.maven.plugin.AbstractMojo;
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
-import org.apache.maven.plugins.annotations.Mojo;
-import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.project.MavenProject;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -24,6 +20,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.project.MavenProject;
+
+import com.google.gson.Gson;
 
 
 @Mojo(name = "push-schemata", defaultPhase = LifecyclePhase.INSTALL)
@@ -116,7 +121,6 @@ public class PushSchemataMojo extends AbstractMojo {
         os.write(payload.getBytes(StandardCharsets.UTF_8));
         os.close();
 
-        StringBuilder sb = new StringBuilder();
         int HttpResult = connection.getResponseCode();
         if (HttpResult == HttpURLConnection.HTTP_CREATED) {
             logger.info("Successfully pushed {}", schemaVersionUrl);
@@ -143,6 +147,7 @@ public class PushSchemataMojo extends AbstractMojo {
     }
 
 
+    @SuppressWarnings("unused")
     private class SchemaVersion {
         final String description;
         final String specification;
