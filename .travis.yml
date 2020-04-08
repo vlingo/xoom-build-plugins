@@ -17,16 +17,16 @@ cache:
     - $HOME/.m2/repository
 
 deploy:
-  provider: bintray
-  file: .travis/bintray.json
-  skip_cleanup: true
-  user: d-led
-  on:
-    branch: master
-  key:
-    secure: jd+1QCnGP4z7xeLB3sXPA/eXOdQhMgclsthJvyp0X4Iq7+ybFhetq5AzE0vbryhYc/nTUYdNgDsoqb2c5T4VRHw9twN47NiJRiKkoFOpEnTt5RGaIFwwFmVzUZxqNRsLFxo045VmRyaDxXEAb4WlgzdITmceTYSIHL4lpTX2fzBPNlzhtqtdgyFvWQsOH8Fvq5mpVQva0D5ScBggKIXp+K6E4ijCCu3oKZ7kxJeVRjvkLzJXeiHb5q5WyL966zFm0Uw/wYL+2ESQottNXOVNRVUCTYxK+Q2bt6ALYzWt8QhOV/vwoZuwCIqzRdz3fr6VItNpuix0CQP4GrJ2UeenwAnEKxyrkXsP3A1oIPA89xjfrJuc2tX6y4/oPPTtmevOO79rnd1uSB7hITp4Cvt07Gwmm31VdFjNpD/+9/g+K2GWLzgor5VXBIY81FuiIt+054Gb9ky7AfRbefG8cd2tKP3f9/BXUxHyAZ8uCODnXwcs2U/CDFHltyQzSI9kyizxcWpBdIqlWRDj41bM1TLR3+vS6pP8gEMZ08EPhHULgP7TLhCqbmOzbtc2ERFsNAPdGbndmJomV66WWTrvcjENpEuitKajeLoU4eDeB91viHX+vl/dJtC3/ZLIDJ/UZ57nicWwFeyDKddUEzwMwb+x9MRXFK1P5rWwtJcBK9evoDQ=
-  passphrase:
-    secure: j61bEuwnFntWlrT/ZDS3E7HKH4Nhe3Ysa8zEifKMdCrwZFGNCcGgBXC3Tg4qdNqeFUhgQo77M3NrdB22zoaI9WIh3St0QKLLWe9fcxGDmCHdajGnx0wQpmyE9MG5PudV3plNAyGTmhwG3rAIXBJC+WkijyQQgw/WitT1iaIp/5kjQYnPEzOKqPqAOQMGtd9vGlqJrqXD2ETInTp7h67W44feLrc7bXM9NihxB4yp2Sn2qSgjRj0JkGiJaN+R4OUy9+ZCURNG+Dsxi4BLIQTyrD9tR3yj2V/YcpWZaARkEuyc2FlCuqGM6G5HPpfdWzqc+pjtpSqGpXSYcN+v03hguJ26LLntXD1mfzUDJvkVRTB7RFaqaBzi1iTunzSywQ0BZg9YR6qgAEfJUwaeebwtpxsauF/9MWOzqRBRhvPMBMg4XDjFlcwl4j/N//zxzanQqWUM3fI1peVghZIiLD98o9bteUg/BT7uq5/QYDCbORSESczItEANfemL+8E6tqFiUj5KK1e+BgqFThe0J18NsWi8qG3MFArNzZXfWimhbxAdVvqajKAMdt1cLn+XijnWmd3zAx9ljSG2tQh5Lg548wE5LR3Az/LELQr1m+ahf6IbB5aBPQ3lNCB0BZ+QUE3vnaRhgz5aQ1KPLTORLktI8RwSwPTQm6TSbU2bEcIn3QE=
+  - provider: script
+    script: "mvn deploy -DskipTests"
+    skip_cleanup: true
+    on:
+      tags: true
+  - provider: script
+    script: "mvn deploy -DskipTests"
+    skip_cleanup: true
+    on:
+      branch: master
 
 notifications:
   slack:
