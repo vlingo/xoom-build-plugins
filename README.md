@@ -1,6 +1,6 @@
 # vlingo-build-plugins
 
-[![Javadocs](http://javadoc.io/badge/io.vlingo/vlingo-build-plugins.svg?color=brightgreen)](http://javadoc.io/doc/io.vlingo/vlingo-build-plugins) [![Build Status](https://travis-ci.org/vlingo/vlingo-build-plugins.svg?branch=master)](https://travis-ci.org/vlingo/vlingo-build-plugins) [ ![Download](https://api.bintray.com/packages/vlingo/vlingo-platform-java/vlingo-build-plugins/images/download.svg) ](https://bintray.com/vlingo/vlingo-platform-java/vlingo-build-plugins/_latestVersion) [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/vlingo-platform-java/)
+[![Javadocs](http://javadoc.io/badge/io.vlingo/vlingo-build-plugins.svg?color=brightgreen)](http://javadoc.io/doc/io.vlingo/vlingo-build-plugins) [![Build Status](https://travis-ci.org/vlingo/vlingo-build-plugins.svg?branch=master)](https://travis-ci.org/vlingo/vlingo-build-plugins) [ ![Download](https://api.bintray.com/packages/vlingo/vlingo-platform-java/vlingo-build-plugins/images/download.svg) ](https://bintray.com/vlingo/vlingo-platform-java/vlingo-build-plugins/_latestVersion) [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/vlingo-platform-java/community/)
 
 The VLINGO/PLATFORM build tooling using Maven plugins.
 
