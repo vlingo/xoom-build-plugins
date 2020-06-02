@@ -3,9 +3,11 @@
 
 [![Javadocs](http://javadoc.io/badge/io.vlingo/vlingo-maven-plugin.svg?color=brightgreen)](http://javadoc.io/doc/io.vlingo/vlingo-maven-plugin) [![Build Status](https://travis-ci.org/vlingo/vlingo-maven-plugin-test.svg?branch=master)](https://travis-ci.org/vlingo/vlingo-maven-plugin-test) [ ![Download](https://api.bintray.com/packages/vlingo/vlingo-platform-java/vlingo-maven-plugin/images/download.svg) ](https://bintray.com/vlingo/vlingo-platform-java/vlingo-maven-plugin/_latestVersion) [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/vlingo-platform-java/community)
 
-The vlingo/PLATFORM build tooling using Maven plugins.
+The VLINGO/PLATFORM build tooling using Maven plugins.
 
-See vlingo-maven-plugin-test for examples.
+Docs: https://docs.vlingo.io/vlingo-maven-plugin
+
+See vlingo-build-plugins-test for examples.
 
 ### Bintray
 
@@ -20,7 +22,7 @@ See vlingo-maven-plugin-test for examples.
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-maven-plugin</artifactId>
-      <version>1.2.9</version>
+      <version>1.3.0</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>
@@ -28,7 +30,7 @@ See vlingo-maven-plugin-test for examples.
 
 ```gradle
 dependencies {
-    compile 'io.vlingo:vlingo-maven-plugin:1.2.9'
+    compile 'io.vlingo:vlingo-maven-plugin:1.3.0'
 }
 
 repositories {
