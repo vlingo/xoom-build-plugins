@@ -16,5 +16,9 @@ public final class Data {
         FAKE_CLASSES.add("io.vlingo.nativeexample.ping.Ping__Proxy");
         FAKE_CLASSES.add("io.vlingo.nativeexample.pong.Pong");
         FAKE_CLASSES.add("io.vlingo.nativeexample.pong.Pong__Proxy");
+        FAKE_CLASSES.add("io.some.vlingo.app.infra.persistence.StateStore__Proxy");
+        FAKE_CLASSES.add("io.some.vlingo.app.infra.persistence.StateStore");
+        FAKE_CLASSES.add("io.some.vlingo.app.infra.persistence.DispatcherControl__Proxy");
+        FAKE_CLASSES.add("io.some.vlingo.app.infra.persistence.DispatcherControl");
     }
 }

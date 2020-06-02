@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
@@ -85,8 +87,22 @@ public class ProtocolScanner {
         return Arrays.stream(javaCode.split("\n"))
                 .map(String::trim)
                 .filter(line -> line.contains(".actorFor"))
-                .map(line -> extractFromWrappingTokens(javaCode, ".actorFor(", ".class"))
+                .flatMap(line -> extractProtocols(javaCode))
                 .collect(toSet());
+    }
+
+    private Stream<String> extractProtocols(String javaCode) {
+        if (!javaCode.contains("new Class")) {
+            return Stream.of(extractFromWrappingTokens(javaCode, ".actorFor(", ".class"));
+        }
+        final String multipleProtocols = "\\{(.*?)\\}";
+        Pattern p = Pattern.compile(multipleProtocols);
+        Matcher m = p.matcher(javaCode);
+        if (m.find()) {
+            String[] protocols = m.group(1).replaceAll(".class", "").split(",");
+            return Arrays.stream(protocols).map(String::trim);
+        }
+        return Stream.empty();
     }
 
     private String load(File file) {
