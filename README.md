@@ -4,7 +4,7 @@
 
 The VLINGO/PLATFORM build tooling using Maven plugins.
 
-Docs: https://docs.vlingo.io/vlingo-maven-plugin
+Docs: https://docs.vlingo.io/vlingo-build-plugins
 
 See vlingo-build-plugins-test for examples.
 
@@ -20,7 +20,7 @@ See vlingo-build-plugins-test for examples.
   <dependencies>
     <dependency>
       <groupId>io.vlingo</groupId>
-      <artifactId>vlingo-maven-plugin</artifactId>
+      <artifactId>vlingo-build-plugins</artifactId>
       <version>1.3.0</version>
       <scope>compile</scope>
     </dependency>
@@ -29,7 +29,7 @@ See vlingo-build-plugins-test for examples.
 
 ```gradle
 dependencies {
-    compile 'io.vlingo:vlingo-maven-plugin:1.3.0'
+    compile 'io.vlingo:vlingo-build-plugins:1.3.0'
 }
 
 repositories {
