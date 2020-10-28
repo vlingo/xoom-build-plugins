@@ -1,4 +1,4 @@
-## How to contribute to the vlingo/maven-plugin
+## How to contribute to the vlingo/build-plugins
 
 #### **Did you find a bug?**
 
