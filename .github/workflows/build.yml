@@ -54,7 +54,7 @@ jobs:
           SLACK_CHANNEL: vlingo-ci
           SLACK_USERNAME: Bob the Builder
           SLACK_ICON: 'https://vlingo.io/wp-content/uploads/cropped-vlingo-favicon-180x180.png'
-          SLACK_FOOTER: '${{ env.GITHUB_REPOSITORY }}'
+          SLACK_FOOTER: ${{ env.GITHUB_REPOSITORY }}
 
       - name: Cleanup
         run: rm -rf ~/.m2/repository/io/vlingo
