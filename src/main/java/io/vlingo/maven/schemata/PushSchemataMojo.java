@@ -33,7 +33,7 @@ import com.google.gson.Gson;
 
 @Mojo(name = "push-schemata", defaultPhase = LifecyclePhase.INSTALL)
 public class PushSchemataMojo extends AbstractMojo {
-    public static final String SCHEMATA_VERSION_RESOURCE_PATH = "/versions/%s";
+    public static final String SCHEMATA_VERSION_RESOURCE_PATH = "/api/versions/%s";
     private final Gson gson;
 
 
