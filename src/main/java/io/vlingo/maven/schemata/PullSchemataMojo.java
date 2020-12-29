@@ -35,8 +35,8 @@ import org.apache.maven.project.MavenProject;
 @Mojo(name = "pull-schemata", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
 public class PullSchemataMojo extends AbstractMojo {
 
-    public static final String SCHEMATA_CODE_RESOURCE_PATH = "/code/%s/%s";
-    public static final String SCHEMATA_SCHEMA_VERSION_RESOURCE_PATH = "/versions/%s/status";
+    public static final String SCHEMATA_CODE_RESOURCE_PATH = "/api/code/%s/%s";
+    public static final String SCHEMATA_SCHEMA_VERSION_RESOURCE_PATH = "/api/versions/%s/status";
     public static final String SCHEMATA_REFERENCE_SEPARATOR = ":";
     Pattern PACKAGE_NAME_PATTERN = Pattern.compile("package (.+);.*");
 
