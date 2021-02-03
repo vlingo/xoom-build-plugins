@@ -7,20 +7,7 @@
 
 package io.vlingo.maven.schemata;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.time.LocalDateTime;
-import java.util.List;
-
+import io.vlingo.maven.schemata.api.*;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -28,14 +15,17 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
-import com.google.gson.Gson;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Mojo(name = "push-schemata", defaultPhase = LifecyclePhase.INSTALL)
 public class PushSchemataMojo extends AbstractMojo {
-    public static final String SCHEMATA_VERSION_RESOURCE_PATH = "/api/versions/%s";
-    private final Gson gson;
-
+    public static final String SCHEMATA_VERSION_RESOURCE_PATH = "versions/%s";
 
     @Parameter(readonly = true, defaultValue = "${project}")
     private MavenProject project;
@@ -46,36 +36,41 @@ public class PushSchemataMojo extends AbstractMojo {
     @Parameter(name = "schemataService")
     private SchemataService schemataService;
 
-
     @Parameter(property = "schemata")
     private List<Schema> schemata;
 
     private final io.vlingo.actors.Logger logger;
+    private final OrganizationAPI organizationAPI = new OrganizationAPI();
+    private final UnitAPI unitAPI = new UnitAPI();
+    private final ContextAPI contextAPI = new ContextAPI();
+    private final SchemaAPI schemaAPI = new SchemaAPI();
 
     public PushSchemataMojo() {
         this.logger = io.vlingo.actors.Logger.basicLogger();
         logger.info("vlingo/maven: Pushing project schemata to vlingo-schemata registry.");
-        gson = new Gson();
     }
 
     @Override
     public void execute() throws MojoExecutionException {
+        createSchemaParents();
 
-        for (Schema schema : this.schemata) {
-            String reference = schema.getRef();
+        for (final Schema schema : this.schemata) {
+            final String reference = schema.getRef();
 
-            Path sourceFile =
+            final Path sourceFile =
                     srcDirectory.toPath()
                             .resolve(schema.getSrc());
 
-            String description = this.generateDescription(reference, this.project.getArtifact().toString());
+            final String description =
+                    this.generateDescription(reference, this.project.getArtifact().toString());
 
             try {
-                String specification = new String(Files.readAllBytes(sourceFile));
-                String previousVersion = schema.getPreviousVersion() == null ? "0.0.0" : schema.getPreviousVersion();
-
-                String payload = this.payloadFrom(specification, previousVersion, description);
-                this.push(reference, payload);
+                final String specification = new String(Files.readAllBytes(sourceFile));
+                final String route = String.format(SCHEMATA_VERSION_RESOURCE_PATH, reference);
+                final String previousVersion = schema.getPreviousVersion() == null ? "0.0.0" : schema.getPreviousVersion();
+                final SchemaVersion schemaVersion = new SchemaVersion(description, specification, previousVersion);
+                createSchema(schema, sourceFile);
+                new SchemaVersionAPI().create(schemataService.getUrl(), route, schemaVersion);
             } catch (IOException e) {
                 throw new MojoExecutionException(
                         "Schema specification " + sourceFile.toAbsolutePath() +
@@ -84,6 +79,30 @@ public class PushSchemataMojo extends AbstractMojo {
             }
         }
 
+    }
+
+    private void createSchemaParents() throws MojoExecutionException {
+        if(schemataService.getHierarchicalCascade()) {
+            try {
+                this.organizationAPI.create(schemataService.getUrl(), schemataService.getClientOrganization());
+                this.unitAPI.create(schemataService.getUrl(), schemataService.getClientOrganization(), schemataService.getClientUnit());
+            } catch (final IOException e) {
+                throw new MojoExecutionException("Unable to create organization/unit");
+            }
+        }
+    }
+
+    private void createSchema(final Schema schema, final Path specificationSourceFile) throws MojoExecutionException {
+        if(schemataService.getHierarchicalCascade()) {
+            try {
+                final String schemaName = schema.getSchemaName();
+                final String namespace = schema.getContextNamespace();
+                this.contextAPI.create(schemataService.getUrl(), schemataService.getClientOrganization(), schemataService.getClientUnit(), namespace);
+                this.schemaAPI.create(schemataService.getUrl(), schemataService.getClientOrganization(), schemataService.getClientUnit(), namespace, schemaName, specificationSourceFile);
+            } catch (final IOException e) {
+                throw new MojoExecutionException("Unable to create context/schema");
+            }
+        }
     }
 
     private String generateDescription(String reference, String project) {
@@ -102,61 +121,4 @@ public class PushSchemataMojo extends AbstractMojo {
         return description.toString();
     }
 
-    private String payloadFrom(String specification, String previousVersion, String description) {
-        SchemaVersion payload = new SchemaVersion(description, specification, previousVersion);
-        return gson.toJson(payload);
-    }
-
-    private void push(String reference, String payload) throws IOException, MojoExecutionException {
-        URL schemaVersionUrl = schemaVersionUrl(this.schemataService.getUrl(), reference);
-
-        logger.info("Pushing {} to {}.", reference, schemaVersionUrl);
-
-        HttpURLConnection connection = (HttpURLConnection) schemaVersionUrl.openConnection();
-        connection.setDoOutput(true);
-        connection.setRequestMethod("POST");
-        connection.setRequestProperty("Content-Type", "application/json");
-
-        OutputStream os = connection.getOutputStream();
-        os.write(payload.getBytes(StandardCharsets.UTF_8));
-        os.close();
-
-        int HttpResult = connection.getResponseCode();
-        if (HttpResult == HttpURLConnection.HTTP_CREATED) {
-            logger.info("Successfully pushed {}", schemaVersionUrl);
-        } else {
-            try (BufferedReader br = new BufferedReader(
-                    new InputStreamReader(connection.getErrorStream(), StandardCharsets.UTF_8))) {
-                StringBuilder response = new StringBuilder();
-                String responseLine = null;
-                while ((responseLine = br.readLine()) != null) {
-                    response.append(responseLine.trim());
-                }
-                logger.error("Pushing the schema version failed: {}", response.toString());
-            }
-            throw new MojoExecutionException(
-                    "Could not push " + reference
-                            + " to " + schemaVersionUrl
-                            + ": " + connection.getResponseMessage()
-                            + " - " + connection.getResponseCode());
-        }
-    }
-
-    private URL schemaVersionUrl(URL baseUrl, String schemaVersionReference) throws MalformedURLException {
-        return new URL(baseUrl, String.format(SCHEMATA_VERSION_RESOURCE_PATH, schemaVersionReference));
-    }
-
-
-    @SuppressWarnings("unused")
-    private class SchemaVersion {
-        final String description;
-        final String specification;
-        final String previousVersion;
-
-        private SchemaVersion(String description, String specification, String previousVersion) {
-            this.description = description;
-            this.specification = specification;
-            this.previousVersion = previousVersion;
-        }
-    }
 }

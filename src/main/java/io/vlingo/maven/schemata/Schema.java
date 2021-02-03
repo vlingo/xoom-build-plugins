@@ -55,6 +55,14 @@ public class Schema {
         this.previousVersion = previousVersion;
     }
 
+    public String getContextNamespace() {
+        return ref.split(":")[2];
+    }
+
+    public String getSchemaName() {
+        return ref.split(":")[3];
+    }
+
     @Override
     public String toString() {
         return "Schema{" +

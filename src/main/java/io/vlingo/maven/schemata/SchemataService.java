@@ -10,6 +10,8 @@ public class SchemataService {
 
     private String clientUnit;
 
+    private boolean hierarchicalCascade = false;
+
     public URL getUrl() {
         return url;
     }
@@ -34,12 +36,21 @@ public class SchemataService {
         this.clientUnit = clientUnit;
     }
 
+    public void setHierarchicalCascade(boolean createSchemaParents) {
+        this.hierarchicalCascade = createSchemaParents;
+    }
+
+    public boolean getHierarchicalCascade() {
+        return hierarchicalCascade;
+    }
+
     @Override
     public String toString() {
         return "SchemataService{" +
                 "url=" + url +
                 ", clientOrganization='" + clientOrganization + '\'' +
                 ", clientUnit='" + clientUnit + '\'' +
+                ", hierarchicalCascade='" + hierarchicalCascade + '\'' +
                 '}';
     }
 }
