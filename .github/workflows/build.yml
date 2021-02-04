@@ -38,9 +38,13 @@ jobs:
           name: JARs
           path: target/*.jar
 
+      - name: Deploy to GitHub
+        if: (startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/master') && github.repository_owner == 'vlingo'
+        run: mvn --batch-mode -DskipTests -DuseGitHubPackages=true deploy
+
       - name: Deploy
         if: (startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/master') && github.repository_owner == 'vlingo'
-        run: mvn --batch-mode -DskipTests deploy
+        run: mvn --batch-mode -DskipTests -DuseJFrogBintray=true deploy
         env:
           BINTRAY_USERNAME: ${{ secrets.BINTRAY_USERNAME }}
           BINTRAY_PASSWORD: ${{ secrets.BINTRAY_PASSWORD }}
