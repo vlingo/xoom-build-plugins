@@ -75,7 +75,8 @@ public class API {
     } else {
       logError(connection, "Querying " + type.getSimpleName() + " failed: {}");
       throw new MojoExecutionException("Could not get " + type + " from " + url + ": "
-              + connection.getResponseMessage() + " - " + connection.getResponseCode());
+              + connection.getResponseMessage() + " - " + connection.getResponseCode() +
+              "-" + response(connection));
     }
   }
 
