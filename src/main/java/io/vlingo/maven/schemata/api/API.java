@@ -62,6 +62,12 @@ public class API {
   public <T> List<T> getAll(final Class<T[]> type,
                             final URL baseURL,
                             final String route) throws IOException, MojoExecutionException {
+    try {
+      waitQueryServiceReadiness(); //Due to eventual consistency
+    } catch (final InterruptedException e) {
+      e.printStackTrace();
+    }
+
     URL url = resolveUrl(baseURL, route);
 
     logger.info("Querying {} from {}.", type.getSimpleName(), url);
@@ -100,5 +106,9 @@ public class API {
     return new BufferedReader(
             new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))
             .lines().collect(Collectors.joining("\n"));
+  }
+
+  private void waitQueryServiceReadiness() throws InterruptedException {
+    Thread.sleep(1500);
   }
 }
