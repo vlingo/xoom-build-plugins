@@ -2,11 +2,14 @@
 
 [![Javadocs](http://javadoc.io/badge/io.vlingo/vlingo-build-plugins.svg?color=brightgreen)](http://javadoc.io/doc/io.vlingo/vlingo-build-plugins) [![Build](https://github.com/vlingo/vlingo-build-plugins/workflows/Build/badge.svg)](https://github.com/vlingo/vlingo-build-plugins/actions?query=workflow%3ABuild) [ ![Download](https://api.bintray.com/packages/vlingo/vlingo-platform-java/vlingo-build-plugins/images/download.svg) ](https://bintray.com/vlingo/vlingo-platform-java/vlingo-build-plugins/_latestVersion) [![Gitter chat](https://badges.gitter.im/gitterHQ/gitter.png)](https://gitter.im/vlingo-platform-java/community/)
 
-The VLINGO/PLATFORM build tooling using Maven plugins.
+The VLINGO XOOM platform SDK build tooling using Maven plugins.
 
 Docs: https://docs.vlingo.io/vlingo-build-plugins
 
 See vlingo-build-plugins-test for examples.
+
+### Important
+If using snapshot builds [follow these instructions](https://github.com/vlingo/vlingo-platform#snapshots-repository) or you will experience failures.
 
 ### Bintray
 
