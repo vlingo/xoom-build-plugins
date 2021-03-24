@@ -129,11 +129,6 @@ jobs:
           BINTRAY_PASSWORD: ${{ secrets.BINTRAY_PASSWORD }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.MAVEN_GPG_PASSPHRASE }}
 
-      - name: Trigger downstream builds
-        run: .github/trigger_deps.sh
-        env:
-          RELEASE_GITHUB_TOKEN: ${{ secrets.RELEASE_GITHUB_TOKEN }}
-
       - name: Notify slack
         if: always()
         uses: rtCamp/action-slack-notify@v2
