@@ -15,7 +15,7 @@ See vlingo-build-plugins-test for examples.
     <dependency>
       <groupId>io.vlingo</groupId>
       <artifactId>vlingo-build-plugins</artifactId>
-      <version>1.5.2</version>
+      <version>1.6.0</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>
@@ -23,7 +23,7 @@ See vlingo-build-plugins-test for examples.
 
 ```gradle
 dependencies {
-    compile 'io.vlingo:vlingo-build-plugins:1.5.2'
+    compile 'io.vlingo:vlingo-build-plugins:1.6.0'
 }
 ```
 
