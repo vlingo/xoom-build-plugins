@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>io.vlingo.xoom</groupId>
-  <artifactId>xoom-build-plugins</artifactId>
+  <groupId>io.vlingo</groupId>
+  <artifactId>vlingo-build-plugins</artifactId>
   <version>1.6.1-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
-  <name>xoom-build-plugins</name>
+  <name>vlingo-build-plugins</name>
   <description>Maven plugins supporting the vlingo platform.</description>
   <url>https://github.com/vlingo/xoom-build-plugins</url>
   <licenses>
@@ -32,6 +32,12 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
+  <distributionManagement>
+    <relocation>
+      <groupId>io.vlingo.xoom</groupId>
+      <artifactId>xoom-build-plugins</artifactId>
+    </relocation>
+  </distributionManagement>
   <build>
     <plugins>
       <plugin>
@@ -168,6 +174,10 @@
         </property>
       </activation>
       <distributionManagement>
+        <relocation>
+          <groupId>io.vlingo.xoom</groupId>
+          <artifactId>xoom-build-plugins</artifactId>
+        </relocation>
         <snapshotRepository>
           <id>central-repository-ossrh</id>
           <name>Snapshots Repository OSSRH</name>
@@ -199,6 +209,10 @@
         </property>
       </activation>
       <distributionManagement>
+        <relocation>
+          <groupId>io.vlingo.xoom</groupId>
+          <artifactId>xoom-build-plugins</artifactId>
+        </relocation>
         <repository>
           <id>github</id>
           <name>GitHub Packages</name>

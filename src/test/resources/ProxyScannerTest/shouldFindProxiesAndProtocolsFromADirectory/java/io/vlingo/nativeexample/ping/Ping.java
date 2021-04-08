@@ -5,9 +5,9 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-package io.vlingo.nativeexample.ping;
+package io.vlingo.xoom.nativeexample.ping;
 
-import io.vlingo.nativeexample.pong.Pong;
+import io.vlingo.xoom.nativeexample.pong.Pong;
 
 public interface Ping {
     void ping(final Pong pong);

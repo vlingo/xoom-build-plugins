@@ -1,4 +1,4 @@
-package io.vlingo.maven.schemata;
+package io.vlingo.xoom.maven.schemata;
 
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Schema {
-    private final io.vlingo.actors.Logger logger = io.vlingo.actors.Logger.basicLogger();
+    private final io.vlingo.xoom.actors.Logger logger = io.vlingo.xoom.actors.Logger.basicLogger();
 
     @Parameter(property = "src")
     private String src;

@@ -4,11 +4,11 @@
 // Mozilla Public License, v. 2.0. If a copy of the MPL
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
-package io.vlingo.nativeexample.pong;
+package io.vlingo.xoom.nativeexample.pong;
 
-import io.vlingo.actors.Stage;
-import io.vlingo.nativeexample.ping.Ping;
-import io.vlingo.actors.Actor;
+import io.vlingo.xoom.actors.Stage;
+import io.vlingo.xoom.nativeexample.ping.Ping;
+import io.vlingo.xoom.actors.Actor;
 
 public class PongActor extends Actor implements Pong {
     private int times;

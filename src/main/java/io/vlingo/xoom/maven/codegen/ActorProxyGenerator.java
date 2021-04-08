@@ -5,24 +5,24 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-package io.vlingo.maven.codegen;
+package io.vlingo.xoom.maven.codegen;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
-import io.vlingo.actors.ProxyGenerator;
+import io.vlingo.xoom.actors.ProxyGenerator;
 
 @Mojo(name="actorProxyGen")
 public class ActorProxyGenerator extends AbstractMojo {
 
   @Parameter(required=true)
   private String[] actorProtocols;
-  private final io.vlingo.actors.Logger logger;
+  private final io.vlingo.xoom.actors.Logger logger;
 
   public ActorProxyGenerator() {
-    this.logger = io.vlingo.actors.Logger.basicLogger();
+    this.logger = io.vlingo.xoom.actors.Logger.basicLogger();
     logger.info("vlingo/maven: Actor proxy generator loaded.");
   }
 

@@ -4,7 +4,7 @@
 // Mozilla Public License, v. 2.0. If a copy of the MPL
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
-package io.vlingo.maven.schemata.api;
+package io.vlingo.xoom.maven.schemata.api;
 
 import com.google.gson.Gson;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -26,7 +26,7 @@ import static java.net.HttpURLConnection.HTTP_OK;
 
 public class API {
 
-  private final io.vlingo.actors.Logger logger = io.vlingo.actors.Logger.basicLogger();
+  private final io.vlingo.xoom.actors.Logger logger = io.vlingo.xoom.actors.Logger.basicLogger();
 
   private final int serviceReadinessInterval;
 

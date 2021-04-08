@@ -4,13 +4,13 @@
 // Mozilla Public License, v. 2.0. If a copy of the MPL
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
-package io.vlingo.nativeexample;
+package io.vlingo.xoom.nativeexample;
 
-import io.vlingo.nativeexample.ping.Ping;
-import io.vlingo.nativeexample.ping.PingActor;
-import io.vlingo.nativeexample.pong.Pong;
-import io.vlingo.actors.World;
-import io.vlingo.nativeexample.pong.PongActor;
+import io.vlingo.xoom.nativeexample.ping.Ping;
+import io.vlingo.xoom.nativeexample.ping.PingActor;
+import io.vlingo.xoom.nativeexample.pong.Pong;
+import io.vlingo.xoom.actors.World;
+import io.vlingo.xoom.nativeexample.pong.PongActor;
 
 public class Application {
     public static void main(String[] args) throws InterruptedException {

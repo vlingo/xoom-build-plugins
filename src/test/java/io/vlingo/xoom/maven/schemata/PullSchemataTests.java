@@ -1,4 +1,4 @@
-package io.vlingo.maven.schemata;
+package io.vlingo.xoom.maven.schemata;
 
 import org.junit.Test;
 
@@ -14,7 +14,7 @@ public class PullSchemataTests {
     public void packageCanBeExtractedFromSource() {
         String source = "package this.is.my.package;\n" +
                 "\n" +
-                "import io.vlingo.lattice.model.DomainEvent;\n" +
+                "import io.vlingo.xoom.lattice.model.DomainEvent;\n" +
                 "\n" +
                 "public final class SchemaDefined extends DomainEvent {\n" +
                 "\n" +
@@ -28,7 +28,7 @@ public class PullSchemataTests {
 
     @Test
     public void defaultPackageCanBeExtractedFromSource() {
-        String source = "import io.vlingo.lattice.model.DomainEvent;\n" +
+        String source = "import io.vlingo.xoom.lattice.model.DomainEvent;\n" +
                 "\n" +
                 "public final class SchemaDefined extends DomainEvent {\n" +
                 "\n" +

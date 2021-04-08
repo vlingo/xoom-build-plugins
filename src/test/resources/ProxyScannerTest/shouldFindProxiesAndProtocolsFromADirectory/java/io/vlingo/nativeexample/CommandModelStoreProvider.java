@@ -8,17 +8,17 @@
 package io.some.vlingo.app.infra.persistence;
 
 import io.some.vlingo.app.model.AccountState;
-import io.vlingo.actors.Definition;
-import io.vlingo.actors.Protocols;
-import io.vlingo.actors.Stage;
-import io.vlingo.lattice.model.stateful.StatefulTypeRegistry;
-import io.vlingo.lattice.model.stateful.StatefulTypeRegistry.Info;
-import io.vlingo.symbio.EntryAdapterProvider;
-import io.vlingo.symbio.StateAdapterProvider;
-import io.vlingo.symbio.store.dispatch.Dispatcher;
-import io.vlingo.symbio.store.dispatch.DispatcherControl;
-import io.vlingo.symbio.store.state.StateStore;
-import io.vlingo.symbio.store.state.inmemory.InMemoryStateStoreActor;
+import io.vlingo.xoom.actors.Definition;
+import io.vlingo.xoom.actors.Protocols;
+import io.vlingo.xoom.actors.Stage;
+import io.vlingo.xoom.lattice.model.stateful.StatefulTypeRegistry;
+import io.vlingo.xoom.lattice.model.stateful.StatefulTypeRegistry.Info;
+import io.vlingo.xoom.symbio.EntryAdapterProvider;
+import io.vlingo.xoom.symbio.StateAdapterProvider;
+import io.vlingo.xoom.symbio.store.dispatch.Dispatcher;
+import io.vlingo.xoom.symbio.store.dispatch.DispatcherControl;
+import io.vlingo.xoom.symbio.store.state.StateStore;
+import io.vlingo.xoom.symbio.store.state.inmemory.InMemoryStateStoreActor;
 
 import java.util.Arrays;
 

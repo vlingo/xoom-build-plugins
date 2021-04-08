@@ -5,9 +5,9 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-package io.vlingo.maven.schemata;
+package io.vlingo.xoom.maven.schemata;
 
-import io.vlingo.maven.schemata.api.*;
+import io.vlingo.xoom.maven.schemata.api.*;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
@@ -39,7 +39,7 @@ public class PushSchemataMojo extends AbstractMojo {
     @Parameter(property = "schemata")
     private List<Schema> schemata;
 
-    private final io.vlingo.actors.Logger logger;
+    private final io.vlingo.xoom.actors.Logger logger;
     private final OrganizationAPI organizationAPI;
     private final UnitAPI unitAPI;
     private final ContextAPI contextAPI;
@@ -47,8 +47,8 @@ public class PushSchemataMojo extends AbstractMojo {
     private final SchemaVersionAPI schemaVersionAPI;
 
     public PushSchemataMojo() {
-        this.logger = io.vlingo.actors.Logger.basicLogger();
-        logger.info("vlingo/maven: Pushing project schemata to vlingo-schemata registry.");
+        this.logger = io.vlingo.xoom.actors.Logger.basicLogger();
+        logger.info("vlingo/maven: Pushing project schemata to xoom-schemata registry.");
         final int serviceReadinessInterval = resolveServiceReadinessInterval();
         this.organizationAPI = new OrganizationAPI(serviceReadinessInterval);
         this.unitAPI = new UnitAPI(organizationAPI, serviceReadinessInterval);

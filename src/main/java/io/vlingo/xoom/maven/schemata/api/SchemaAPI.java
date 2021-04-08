@@ -5,7 +5,7 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-package io.vlingo.maven.schemata.api;
+package io.vlingo.xoom.maven.schemata.api;
 
 import org.apache.maven.plugin.MojoExecutionException;
 

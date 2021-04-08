@@ -1,4 +1,4 @@
-package io.vlingo.maven.schemata;
+package io.vlingo.xoom.maven.schemata;
 
 import java.net.URL;
 

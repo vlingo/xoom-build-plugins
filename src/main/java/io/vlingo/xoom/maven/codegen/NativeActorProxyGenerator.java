@@ -5,7 +5,7 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-package io.vlingo.maven.codegen;
+package io.vlingo.xoom.maven.codegen;
 
 import static java.util.stream.Collectors.toSet;
 
@@ -30,7 +30,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
-import io.vlingo.actors.ProxyGenerator;
+import io.vlingo.xoom.actors.ProxyGenerator;
 
 @Mojo(name="nativeActorProxyGen", defaultPhase = LifecyclePhase.GENERATE_SOURCES, requiresDependencyCollection = ResolutionScope.COMPILE_PLUS_RUNTIME, requiresDependencyResolution = ResolutionScope.COMPILE_PLUS_RUNTIME)
 public class NativeActorProxyGenerator extends AbstractMojo {
@@ -43,10 +43,10 @@ public class NativeActorProxyGenerator extends AbstractMojo {
   @Parameter(defaultValue = "${project}", readonly = true)
   private MavenProject mavenProject;
 
-  private final io.vlingo.actors.Logger logger;
+  private final io.vlingo.xoom.actors.Logger logger;
 
   public NativeActorProxyGenerator() {
-    this.logger = io.vlingo.actors.Logger.basicLogger();
+    this.logger = io.vlingo.xoom.actors.Logger.basicLogger();
     logger.info("vlingo/maven: Native actor proxy generator loaded.");
   }
 
@@ -107,7 +107,7 @@ public class NativeActorProxyGenerator extends AbstractMojo {
       ZipEntry zipEntry = zis.getNextEntry();
       byte[] buffer = new byte[1024];
       while (zipEntry != null) {
-        if (zipEntry.getName().equals("vlingo-reflection")) {
+        if (zipEntry.getName().equals("xoom-reflection")) {
           ByteArrayOutputStream bos = new ByteArrayOutputStream();
           int len;
           while ((len = zis.read(buffer)) > 0) {

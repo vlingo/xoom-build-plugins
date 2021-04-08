@@ -5,7 +5,7 @@
 // was not distributed with this file, You can obtain
 // one at https://mozilla.org/MPL/2.0/.
 
-package io.vlingo.maven.schemata;
+package io.vlingo.xoom.maven.schemata;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -53,10 +53,10 @@ public class PullSchemataMojo extends AbstractMojo {
     @Parameter(property = "schemata")
     private List<Schema> schemata;
 
-    private final io.vlingo.actors.Logger logger;
+    private final io.vlingo.xoom.actors.Logger logger;
 
     public PullSchemataMojo() {
-        this.logger = io.vlingo.actors.Logger.basicLogger();
+        this.logger = io.vlingo.xoom.actors.Logger.basicLogger();
         logger.info("vlingo/maven: Pulling code generated from vlingo/schemata registry.");
     }
 
@@ -118,7 +118,7 @@ public class PullSchemataMojo extends AbstractMojo {
                 logger.error( "{} status is '{}' and may no longer be used", schemaReference, status);
                 throw new MojoFailureException(schemaReference + " has reached the end of its life cycle");
             default:
-                logger.error("Unknown status " + status +". Are you using matching versions of vlingo-schemata and the build plugins?");
+                logger.error("Unknown status " + status +". Are you using matching versions of xoom-schemata and the build plugins?");
 
         }
 
