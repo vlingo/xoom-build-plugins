@@ -15,7 +15,14 @@ import java.net.URL;
 public class UnitAPI extends API {
 
   private static final String ROUTE_PATTERN = "organizations/%s/units";
-  private final OrganizationAPI organizationAPI = new OrganizationAPI();
+
+  private final OrganizationAPI organizationAPI;
+
+  public UnitAPI(final OrganizationAPI organizationAPI,
+                 final int schemataServiceReadinessInterval) {
+    super(schemataServiceReadinessInterval);
+    this.organizationAPI = organizationAPI;
+  }
 
   public void create(final URL baseURL, final String organizationName, final String unitName) throws IOException, MojoExecutionException {
     final OrganizationData data = organizationAPI.find(baseURL, organizationName);

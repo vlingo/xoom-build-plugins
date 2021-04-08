@@ -14,6 +14,10 @@ import java.net.URL;
 
 public class SchemaVersionAPI extends API {
 
+  public SchemaVersionAPI() {
+    super(0);
+  }
+
   public void create(final URL baseURL, final String route, final SchemaVersion schemaVersion) throws IOException, MojoExecutionException {
     post(SchemaVersion.class.getSimpleName(), baseURL, route, schemaVersion);
   }

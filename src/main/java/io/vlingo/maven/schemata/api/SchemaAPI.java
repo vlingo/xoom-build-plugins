@@ -18,9 +18,19 @@ public class SchemaAPI extends API {
 
   private static final String ROUTE_PATTERN = "organizations/%s/units/%s/contexts/%s/schemas";
 
-  private final UnitAPI unitAPI = new UnitAPI();
-  private final ContextAPI contextAPI = new ContextAPI();
-  private final OrganizationAPI organizationAPI = new OrganizationAPI();
+  private final UnitAPI unitAPI;
+  private final ContextAPI contextAPI;
+  private final OrganizationAPI organizationAPI;
+
+  public SchemaAPI(final UnitAPI unitAPI,
+                   final ContextAPI contextAPI,
+                   final OrganizationAPI organizationAPI,
+                   final int schemataServiceReadinessInterval) {
+    super(schemataServiceReadinessInterval);
+    this.unitAPI = unitAPI;
+    this.contextAPI = contextAPI;
+    this.organizationAPI = organizationAPI;
+  }
 
   public void create(final URL baseURL,
                      final String organizationName,

@@ -7,7 +7,6 @@
 package io.vlingo.maven.schemata.api;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import org.apache.maven.plugin.MojoExecutionException;
 
 import java.io.BufferedReader;
@@ -18,7 +17,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,6 +27,12 @@ import static java.net.HttpURLConnection.HTTP_OK;
 public class API {
 
   private final io.vlingo.actors.Logger logger = io.vlingo.actors.Logger.basicLogger();
+
+  private final int serviceReadinessInterval;
+
+  public API(final int serviceReadinessInterval) {
+    this.serviceReadinessInterval = serviceReadinessInterval;
+  }
 
   public void post(final String type,
                    final URL baseURL,
@@ -49,6 +53,7 @@ public class API {
 
     if (connection.getResponseCode() == HTTP_CREATED) {
       logger.info("Successfully pushed {}", url);
+      waitForServiceReadiness();
     } else {
       logError(connection, "Pushing the schema version failed: {}");
       throw new MojoExecutionException(
@@ -62,12 +67,6 @@ public class API {
   public <T> List<T> getAll(final Class<T[]> type,
                             final URL baseURL,
                             final String route) throws IOException, MojoExecutionException {
-    try {
-      waitQueryServiceReadiness(); //Due to eventual consistency
-    } catch (final InterruptedException e) {
-      e.printStackTrace();
-    }
-
     URL url = resolveUrl(baseURL, route);
 
     logger.info("Querying {} from {}.", type.getSimpleName(), url);
@@ -108,7 +107,14 @@ public class API {
             .lines().collect(Collectors.joining("\n"));
   }
 
-  private void waitQueryServiceReadiness() throws InterruptedException {
-    Thread.sleep(1500);
+  private void waitForServiceReadiness() throws MojoExecutionException {
+    if(serviceReadinessInterval > 0) {
+      try {
+        Thread.sleep(serviceReadinessInterval);
+      } catch (final InterruptedException e) {
+        e.printStackTrace();
+        throw new MojoExecutionException("Unable to wait for schemata service readiness");
+      }
+    }
   }
 }

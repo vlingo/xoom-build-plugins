@@ -40,14 +40,21 @@ public class PushSchemataMojo extends AbstractMojo {
     private List<Schema> schemata;
 
     private final io.vlingo.actors.Logger logger;
-    private final OrganizationAPI organizationAPI = new OrganizationAPI();
-    private final UnitAPI unitAPI = new UnitAPI();
-    private final ContextAPI contextAPI = new ContextAPI();
-    private final SchemaAPI schemaAPI = new SchemaAPI();
+    private final OrganizationAPI organizationAPI;
+    private final UnitAPI unitAPI;
+    private final ContextAPI contextAPI;
+    private final SchemaAPI schemaAPI;
+    private final SchemaVersionAPI schemaVersionAPI;
 
     public PushSchemataMojo() {
         this.logger = io.vlingo.actors.Logger.basicLogger();
         logger.info("vlingo/maven: Pushing project schemata to vlingo-schemata registry.");
+        final int serviceReadinessInterval = resolveServiceReadinessInterval();
+        this.organizationAPI = new OrganizationAPI(serviceReadinessInterval);
+        this.unitAPI = new UnitAPI(organizationAPI, serviceReadinessInterval);
+        this.contextAPI = new ContextAPI(unitAPI, organizationAPI, serviceReadinessInterval);
+        this.schemaAPI = new SchemaAPI(unitAPI, contextAPI, organizationAPI, serviceReadinessInterval);
+        this.schemaVersionAPI = new SchemaVersionAPI();
     }
 
     @Override
@@ -69,8 +76,8 @@ public class PushSchemataMojo extends AbstractMojo {
                 final String route = String.format(SCHEMATA_VERSION_RESOURCE_PATH, reference);
                 final String previousVersion = schema.getPreviousVersion() == null ? "0.0.0" : schema.getPreviousVersion();
                 final SchemaVersion schemaVersion = new SchemaVersion(description, specification, previousVersion);
-                createSchema(schema, sourceFile);
-                new SchemaVersionAPI().create(schemataService.getUrl(), route, schemaVersion);
+                this.createSchema(schema, sourceFile);
+                this.schemaVersionAPI.create(schemataService.getUrl(), route, schemaVersion);
             } catch (IOException e) {
                 throw new MojoExecutionException(
                         "Schema specification " + sourceFile.toAbsolutePath() +
@@ -119,6 +126,10 @@ public class PushSchemataMojo extends AbstractMojo {
         description.append(LocalDateTime.now().toString());
 
         return description.toString();
+    }
+
+    private int resolveServiceReadinessInterval() {
+        return schemataService.getHierarchicalCascade() ? 1500 : 0;
     }
 
 }

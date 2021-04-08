@@ -16,8 +16,16 @@ public class ContextAPI extends API {
 
   private static final String ROUTE_PATTERN = "organizations/%s/units/%s/contexts";
 
-  private final UnitAPI unitAPI = new UnitAPI();
-  private final OrganizationAPI organizationAPI = new OrganizationAPI();
+  private final UnitAPI unitAPI;
+  private final OrganizationAPI organizationAPI;
+
+  public ContextAPI(final UnitAPI unitAPI,
+                    final OrganizationAPI organizationAPI,
+                    final int schemataServiceReadinessInterval) {
+    super(schemataServiceReadinessInterval);
+    this.unitAPI = unitAPI;
+    this.organizationAPI = organizationAPI;
+  }
 
   public void create(final URL baseURL,
                      final String organizationName,

@@ -14,6 +14,10 @@ import java.net.URL;
 
 public class OrganizationAPI extends API {
 
+  public OrganizationAPI(final int serviceReadinessInterval) {
+    super(serviceReadinessInterval);
+  }
+
   public void create(final URL baseURL, final String organizationName) throws IOException, MojoExecutionException {
     if(!alreadyExist(baseURL, organizationName)) {
       post(OrganizationData.class.getSimpleName(), baseURL, "organizations", new OrganizationData(organizationName));
