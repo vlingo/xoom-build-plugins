@@ -30,7 +30,7 @@ public class PushSchemataMojo extends AbstractMojo {
     @Parameter(readonly = true, defaultValue = "${project}")
     private MavenProject project;
 
-    @Parameter(name = "srcDirectory", defaultValue = "src/main/vlingo/schemata", required = true)
+    @Parameter(name = "srcDirectory", defaultValue = "src/main/xoom/schemata", required = true)
     private File srcDirectory;
 
     @Parameter(name = "schemataService")
