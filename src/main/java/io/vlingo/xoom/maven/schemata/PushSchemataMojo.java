@@ -129,7 +129,7 @@ public class PushSchemataMojo extends AbstractMojo {
     }
 
     private int resolveServiceReadinessInterval() {
-        return schemataService.getHierarchicalCascade() ? 1500 : 0;
+        return schemataService != null && schemataService.getHierarchicalCascade() ? 1500 : 0;
     }
 
 }
