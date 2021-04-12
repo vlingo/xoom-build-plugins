@@ -40,25 +40,20 @@ public class PushSchemataMojo extends AbstractMojo {
     private List<Schema> schemata;
 
     private final io.vlingo.xoom.actors.Logger logger;
-    private final OrganizationAPI organizationAPI;
-    private final UnitAPI unitAPI;
-    private final ContextAPI contextAPI;
-    private final SchemaAPI schemaAPI;
-    private final SchemaVersionAPI schemaVersionAPI;
+    private OrganizationAPI organizationAPI;
+    private UnitAPI unitAPI;
+    private ContextAPI contextAPI;
+    private SchemaAPI schemaAPI;
+    private SchemaVersionAPI schemaVersionAPI;
 
     public PushSchemataMojo() {
         this.logger = io.vlingo.xoom.actors.Logger.basicLogger();
         logger.info("vlingo/maven: Pushing project schemata to xoom-schemata registry.");
-        final int serviceReadinessInterval = resolveServiceReadinessInterval();
-        this.organizationAPI = new OrganizationAPI(serviceReadinessInterval);
-        this.unitAPI = new UnitAPI(organizationAPI, serviceReadinessInterval);
-        this.contextAPI = new ContextAPI(unitAPI, organizationAPI, serviceReadinessInterval);
-        this.schemaAPI = new SchemaAPI(unitAPI, contextAPI, organizationAPI, serviceReadinessInterval);
-        this.schemaVersionAPI = new SchemaVersionAPI();
     }
 
     @Override
     public void execute() throws MojoExecutionException {
+        initializeAPI();
         createSchemaParents();
 
         for (final Schema schema : this.schemata) {
@@ -85,7 +80,15 @@ public class PushSchemataMojo extends AbstractMojo {
                         , e);
             }
         }
+    }
 
+    private void initializeAPI() {
+        final int serviceReadinessInterval = resolveServiceReadinessInterval();
+        this.organizationAPI = new OrganizationAPI(serviceReadinessInterval);
+        this.unitAPI = new UnitAPI(organizationAPI, serviceReadinessInterval);
+        this.contextAPI = new ContextAPI(unitAPI, organizationAPI, serviceReadinessInterval);
+        this.schemaAPI = new SchemaAPI(unitAPI, contextAPI, organizationAPI, serviceReadinessInterval);
+        this.schemaVersionAPI = new SchemaVersionAPI();
     }
 
     private void createSchemaParents() throws MojoExecutionException {
