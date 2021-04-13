@@ -48,7 +48,7 @@ public class PushSchemataMojo extends AbstractMojo {
 
     public PushSchemataMojo() {
         this.logger = io.vlingo.xoom.actors.Logger.basicLogger();
-        logger.info("vlingo/maven: Pushing project schemata to xoom-schemata registry.");
+        logger.info("XOOM: Pushing project schemata to VLINGO XOOM Schemata registry.");
     }
 
     @Override

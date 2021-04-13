@@ -47,7 +47,7 @@ public class NativeActorProxyGenerator extends AbstractMojo {
 
   public NativeActorProxyGenerator() {
     this.logger = io.vlingo.xoom.actors.Logger.basicLogger();
-    logger.info("vlingo/maven: Native actor proxy generator loaded.");
+    logger.info("XOOM: Native actor proxy generator loaded.");
   }
 
   @Override

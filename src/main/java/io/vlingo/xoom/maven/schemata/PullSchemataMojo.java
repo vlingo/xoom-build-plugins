@@ -57,7 +57,7 @@ public class PullSchemataMojo extends AbstractMojo {
 
     public PullSchemataMojo() {
         this.logger = io.vlingo.xoom.actors.Logger.basicLogger();
-        logger.info("vlingo/maven: Pulling code generated from vlingo/schemata registry.");
+        logger.info("XOOM: Pulling code generated from VLINGO XOOM Schemata registry.");
     }
 
     @Override
