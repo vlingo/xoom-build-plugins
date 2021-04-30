@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.vlingo</groupId>
   <artifactId>vlingo-build-plugins</artifactId>
-  <version>1.6.1-SNAPSHOT</version>
+  <version>1.7.5</version>
   <packaging>maven-plugin</packaging>
   <name>vlingo-build-plugins</name>
   <description>Maven plugins supporting the vlingo platform.</description>
@@ -89,7 +89,7 @@
     <dependency>
       <groupId>io.vlingo.xoom</groupId>
       <artifactId>xoom-actors</artifactId>
-      <version>1.6.1-SNAPSHOT</version>
+      <version>1.7.5</version>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
