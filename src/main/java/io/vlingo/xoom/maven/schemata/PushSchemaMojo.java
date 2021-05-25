@@ -10,7 +10,6 @@ package io.vlingo.xoom.maven.schemata;
 import io.vlingo.xoom.maven.schemata.api.*;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
@@ -23,7 +22,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 
-@Mojo(name = "push-schema", defaultPhase = LifecyclePhase.INSTALL)
+@Mojo(name = "push-schema")
 public class PushSchemaMojo extends AbstractMojo {
     public static final String SCHEMATA_VERSION_RESOURCE_PATH = "versions/%s";
 

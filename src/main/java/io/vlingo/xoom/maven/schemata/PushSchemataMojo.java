@@ -7,9 +7,8 @@
 
 package io.vlingo.xoom.maven.schemata;
 
-import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 
-@Mojo(name = "push-schemata", defaultPhase = LifecyclePhase.INSTALL)
+@Mojo(name = "push-schemata")
 public class PushSchemataMojo extends PushSchemaMojo {
 }
