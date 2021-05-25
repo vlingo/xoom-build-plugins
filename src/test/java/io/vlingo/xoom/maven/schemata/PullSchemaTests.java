@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 
 import static org.junit.Assert.assertEquals;
 
-public class PullSchemataTests {
+public class PullSchemaTests {
 
     @Test
     public void packageCanBeExtractedFromSource() {
@@ -21,7 +21,7 @@ public class PullSchemataTests {
                 "  public SchemaDefined() {\n" +
                 "}";
 
-        PullSchemataMojo psmut = new PullSchemataMojo();
+        PullSchemaMojo psmut = new PullSchemaMojo();
         Path result = psmut.packagePathFromSource(new File("."), source);
         assertEquals(Paths.get(".", "this", "is", "my", "package"), result);
     }
@@ -35,7 +35,7 @@ public class PullSchemataTests {
                 "  public SchemaDefined() {\n" +
                 "}";
 
-        PullSchemataMojo psmut = new PullSchemataMojo();
+        PullSchemaMojo psmut = new PullSchemaMojo();
         Path result = psmut.packagePathFromSource(new File("."), source);
         assertEquals(Paths.get("."), result);
     }
