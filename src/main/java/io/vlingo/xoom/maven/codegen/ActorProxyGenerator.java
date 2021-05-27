@@ -23,16 +23,16 @@ public class ActorProxyGenerator extends AbstractMojo {
 
   public ActorProxyGenerator() {
     this.logger = io.vlingo.xoom.actors.Logger.basicLogger();
-    logger.info("vlingo/maven: Actor proxy generator loaded.");
+    logger.info("XOOM: Actor proxy generator loaded.");
   }
 
   @Override
   public void execute() throws MojoExecutionException {
     try (final ProxyGenerator generator = ProxyGenerator.forMain(getClass().getClassLoader(), true, logger)) {
       for (final String actorProtocol : actorProtocols) {
-        logger.info("vlingo/maven: Generating proxy for: " + actorProtocol);
+        logger.info("XOOM: Generating proxy for: " + actorProtocol);
         generator.generateFor(actorProtocol);
-        logger.info("vlingo/maven: Generation done.");
+        logger.info("XOOM: Generation done.");
       }
     } catch (Exception e) {
       final String message = "Proxy generator failed because: " + e.getMessage();
