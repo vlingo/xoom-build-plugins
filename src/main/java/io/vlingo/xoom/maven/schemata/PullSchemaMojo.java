@@ -47,7 +47,7 @@ public class PullSchemaMojo extends AbstractMojo {
     @Parameter(name = "schemataService")
     private SchemataService schemataService;
 
-    @Parameter(name = "outputDirectory", defaultValue = "target/generated-sources/vlingo", required = true)
+    @Parameter(name = "outputDirectory", defaultValue = "target/generated-sources/xoom/schemata", required = true)
     private File outputDirectory;
 
     @Parameter(property = "schemata")
