@@ -27,6 +27,7 @@ public class UnitAPI extends API {
   public void create(final URL baseURL, final String organizationName, final String unitName) throws IOException, MojoExecutionException {
     final OrganizationData data = organizationAPI.find(baseURL, organizationName);
     if(!alreadyExist(baseURL, data.organizationId, unitName)) {
+      promptForHierarchyCreation("unit", organizationName + ":" + unitName);
       final String route = String.format(ROUTE_PATTERN, data.organizationId);
       post(UnitData.class.getSimpleName(), baseURL, route, new UnitData(unitName));
     }

@@ -34,6 +34,7 @@ public class ContextAPI extends API {
     final OrganizationData organization = organizationAPI.find(baseURL, organizationName);
     final UnitData unit = unitAPI.find(baseURL, organization.organizationId, unitName);
     if(!alreadyExist(baseURL, organization.organizationId, unit.unitId, namespace)) {
+      promptForHierarchyCreation("context", String.format("%s:%s:%s", organizationName, unitName, namespace));
       final String route = String.format(ROUTE_PATTERN, organization.organizationId, unit.unitId);
       post(ContextData.class.getSimpleName(), baseURL, route, new ContextData(namespace));
     }

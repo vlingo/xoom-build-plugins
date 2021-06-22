@@ -9,10 +9,7 @@ package io.vlingo.xoom.maven.schemata.api;
 import com.google.gson.Gson;
 import org.apache.maven.plugin.MojoExecutionException;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -26,9 +23,15 @@ import static java.net.HttpURLConnection.HTTP_OK;
 
 public class API {
 
+  private static final String HIERARCHY_PROMPT =
+          "The %s %s does not exist and will be created if you continue. \n" +
+          "Are you sure the %s %s should be created? \n" +
+          "[y]es/[n]o  ";
+
   private final io.vlingo.xoom.actors.Logger logger = io.vlingo.xoom.actors.Logger.basicLogger();
 
   private final int serviceReadinessInterval;
+
 
   public API(final int serviceReadinessInterval) {
     this.serviceReadinessInterval = serviceReadinessInterval;
@@ -114,6 +117,24 @@ public class API {
       } catch (final InterruptedException e) {
         e.printStackTrace();
         throw new MojoExecutionException("Unable to wait for schemata service readiness");
+      }
+    }
+  }
+
+  protected void promptForHierarchyCreation(final String hierarchyLevel, final String hierarchyName) {
+    final String promptMessage =
+            String.format(HIERARCHY_PROMPT, hierarchyLevel, hierarchyName, hierarchyLevel, hierarchyName);
+
+    final Console console = System.console();
+
+    while(true) {
+      final String input = console.readLine(promptMessage);
+      final boolean valid = input.equals("y") || input.equals("n");
+      if(valid) {
+        if(input.equals("n")) {
+          throw new HierarchyCreationNotAllowedException();
+        }
+        break;
       }
     }
   }

@@ -52,10 +52,11 @@ public class PushSchemaMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException {
-        initializeAPI();
-        createSchemaParents();
+        try {
+          initializeAPI();
+          createSchemaParents();
 
-        for (final Schema schema : this.schemata) {
+          for (final Schema schema : this.schemata) {
             final String reference = schema.getRef();
 
             final Path sourceFile =
@@ -66,18 +67,21 @@ public class PushSchemaMojo extends AbstractMojo {
                     this.generateDescription(reference, this.project.getArtifact().toString());
 
             try {
-                final String specification = new String(Files.readAllBytes(sourceFile));
-                final String route = String.format(SCHEMATA_VERSION_RESOURCE_PATH, reference);
-                final String previousVersion = schema.getPreviousVersion() == null ? "0.0.0" : schema.getPreviousVersion();
-                final SchemaVersion schemaVersion = new SchemaVersion(description, specification, previousVersion);
-                this.createSchema(schema, sourceFile);
-                this.schemaVersionAPI.create(schemataService.getUrl(), route, schemaVersion);
+              final String specification = new String(Files.readAllBytes(sourceFile));
+              final String route = String.format(SCHEMATA_VERSION_RESOURCE_PATH, reference);
+              final String previousVersion = schema.getPreviousVersion() == null ? "0.0.0" : schema.getPreviousVersion();
+              final SchemaVersion schemaVersion = new SchemaVersion(description, specification, previousVersion);
+              this.createSchema(schema, sourceFile);
+              this.schemaVersionAPI.create(schemataService.getUrl(), route, schemaVersion);
             } catch (IOException e) {
-                throw new MojoExecutionException(
-                        "Schema specification " + sourceFile.toAbsolutePath() +
-                                " could not be pushed to " + schemataService.getUrl()
-                        , e);
+              throw new MojoExecutionException(
+                      "Schema specification " + sourceFile.toAbsolutePath() +
+                              " could not be pushed to " + schemataService.getUrl()
+                      , e);
             }
+          }
+        } catch (final HierarchyCreationNotAllowedException exception) {
+          logger.info("Suspending push-schema goal.");
         }
     }
 
