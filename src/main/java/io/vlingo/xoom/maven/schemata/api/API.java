@@ -30,11 +30,16 @@ public class API {
 
   private final io.vlingo.xoom.actors.Logger logger = io.vlingo.xoom.actors.Logger.basicLogger();
 
+  private final boolean skipPrompt;
   private final int serviceReadinessInterval;
 
-
   public API(final int serviceReadinessInterval) {
+    this(serviceReadinessInterval, false);
+  }
+
+  public API(final int serviceReadinessInterval, final boolean skipPrompt) {
     this.serviceReadinessInterval = serviceReadinessInterval;
+    this.skipPrompt = skipPrompt;
   }
 
   public void post(final String type,
@@ -122,19 +127,21 @@ public class API {
   }
 
   protected void promptForHierarchyCreation(final String hierarchyLevel, final String hierarchyName) {
-    final String promptMessage =
-            String.format(HIERARCHY_PROMPT, hierarchyLevel, hierarchyName, hierarchyLevel, hierarchyName);
+    if (!skipPrompt) {
+      final String promptMessage =
+              String.format(HIERARCHY_PROMPT, hierarchyLevel, hierarchyName, hierarchyLevel, hierarchyName);
 
-    final Console console = System.console();
+      final Console console = System.console();
 
-    while(true) {
-      final String input = console.readLine(promptMessage);
-      final boolean valid = input.equals("y") || input.equals("n");
-      if(valid) {
-        if(input.equals("n")) {
-          throw new HierarchyCreationNotAllowedException();
+      while (true) {
+        final String input = console.readLine(promptMessage);
+        final boolean valid = input.equals("y") || input.equals("n");
+        if (valid) {
+          if (input.equals("n")) {
+            throw new HierarchyCreationNotAllowedException();
+          }
+          break;
         }
-        break;
       }
     }
   }

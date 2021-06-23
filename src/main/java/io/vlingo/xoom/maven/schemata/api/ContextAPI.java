@@ -21,8 +21,9 @@ public class ContextAPI extends API {
 
   public ContextAPI(final UnitAPI unitAPI,
                     final OrganizationAPI organizationAPI,
-                    final int schemataServiceReadinessInterval) {
-    super(schemataServiceReadinessInterval);
+                    final int schemataServiceReadinessInterval,
+                    final boolean skipPrompt) {
+    super(schemataServiceReadinessInterval, skipPrompt);
     this.unitAPI = unitAPI;
     this.organizationAPI = organizationAPI;
   }

@@ -87,9 +87,9 @@ public class PushSchemaMojo extends AbstractMojo {
 
     private void initializeAPI() {
         final int serviceReadinessInterval = resolveServiceReadinessInterval();
-        this.organizationAPI = new OrganizationAPI(serviceReadinessInterval);
-        this.unitAPI = new UnitAPI(organizationAPI, serviceReadinessInterval);
-        this.contextAPI = new ContextAPI(unitAPI, organizationAPI, serviceReadinessInterval);
+        this.organizationAPI = new OrganizationAPI(serviceReadinessInterval, schemataService.isSkipPrompt());
+        this.unitAPI = new UnitAPI(organizationAPI, serviceReadinessInterval, schemataService.isSkipPrompt());
+        this.contextAPI = new ContextAPI(unitAPI, organizationAPI, serviceReadinessInterval, schemataService.isSkipPrompt());
         this.schemaAPI = new SchemaAPI(unitAPI, contextAPI, organizationAPI, serviceReadinessInterval);
         this.schemaVersionAPI = new SchemaVersionAPI();
     }

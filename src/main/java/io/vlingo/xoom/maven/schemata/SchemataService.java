@@ -12,6 +12,8 @@ public class SchemataService {
 
     private boolean hierarchicalCascade = false;
 
+    private boolean skipPrompt = false;
+
     public URL getUrl() {
         return url;
     }
@@ -44,6 +46,14 @@ public class SchemataService {
         return hierarchicalCascade;
     }
 
+    public boolean isSkipPrompt() {
+        return skipPrompt;
+    }
+
+    public void setSkipPrompt(boolean skipPrompt) {
+        this.skipPrompt = skipPrompt;
+    }
+
     @Override
     public String toString() {
         return "SchemataService{" +
@@ -51,6 +61,7 @@ public class SchemataService {
                 ", clientOrganization='" + clientOrganization + '\'' +
                 ", clientUnit='" + clientUnit + '\'' +
                 ", hierarchicalCascade='" + hierarchicalCascade + '\'' +
+                ", skipPrompt='" + skipPrompt + '\'' +
                 '}';
     }
 }

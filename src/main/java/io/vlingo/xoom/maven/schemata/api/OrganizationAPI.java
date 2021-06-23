@@ -14,8 +14,8 @@ import java.net.URL;
 
 public class OrganizationAPI extends API {
 
-  public OrganizationAPI(final int serviceReadinessInterval) {
-    super(serviceReadinessInterval);
+  public OrganizationAPI(final int serviceReadinessInterval, boolean skipPrompt) {
+    super(serviceReadinessInterval, skipPrompt);
   }
 
   public void create(final URL baseURL, final String organizationName) throws IOException, MojoExecutionException {

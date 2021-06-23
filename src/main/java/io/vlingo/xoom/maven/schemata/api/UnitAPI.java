@@ -19,8 +19,9 @@ public class UnitAPI extends API {
   private final OrganizationAPI organizationAPI;
 
   public UnitAPI(final OrganizationAPI organizationAPI,
-                 final int schemataServiceReadinessInterval) {
-    super(schemataServiceReadinessInterval);
+                 final int schemataServiceReadinessInterval,
+                 final boolean skipPrompt) {
+    super(schemataServiceReadinessInterval, skipPrompt);
     this.organizationAPI = organizationAPI;
   }
 
