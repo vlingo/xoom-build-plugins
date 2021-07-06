@@ -8,5 +8,5 @@
 package io.vlingo.xoom.maven.schemata.api;
 
 public class HierarchyCreationNotAllowedException extends RuntimeException {
-
+  private static final long serialVersionUID = 7502811335646735140L;
 }
