@@ -7,6 +7,7 @@
 
 package io.vlingo.xoom.maven.schemata;
 
+import com.google.gson.Gson;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -19,6 +20,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -26,10 +28,16 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.net.HttpURLConnection.HTTP_OK;
 
 
 @Mojo(name = "pull-schema", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
@@ -38,6 +46,7 @@ public class PullSchemaMojo extends AbstractMojo {
     public static final String SCHEMATA_CODE_RESOURCE_PATH = "/api/code/%s/%s";
     public static final String SCHEMATA_SCHEMA_VERSION_RESOURCE_PATH = "/api/versions/%s/status";
     public static final String SCHEMATA_REFERENCE_SEPARATOR = ":";
+    public static final String SCHEMATA_DEPENDENCIES_RESOURCE_PATH = "/api/schemas/%s/dependencies";
     Pattern PACKAGE_NAME_PATTERN = Pattern.compile("package (.+);.*");
 
 
@@ -64,10 +73,10 @@ public class PullSchemaMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException, MojoFailureException {
         logger.info(schemataService.toString());
         this.project.addCompileSourceRoot(this.outputDirectory.toString());
+
         try {
-            for (Schema schema : this.schemata) {
-                String reference = schema.getRef();
-                String source = this.pullSource(reference);
+            for (final String reference : resolveSchemaReferences()) {
+                final String source = this.pullSource(reference);
                 this.writeSourceFile(reference, source);
             }
         } catch (IOException e) {
@@ -75,11 +84,9 @@ public class PullSchemaMojo extends AbstractMojo {
         }
     }
 
-    private String pullSource(String schemaReference) throws IOException, MojoFailureException {
+    private String pullSource(final String schemaReference) throws IOException, MojoFailureException {
         URL codeResourceUrl = codeResourceUrl(this.schemataService.getUrl(), schemaReference, "java");
-
         validateSchemaStatus(schemaReference);
-
 
         logger.info("Pulling {} from {}", schemaReference, codeResourceUrl);
         URLConnection connection = codeResourceUrl.openConnection();
@@ -97,6 +104,53 @@ public class PullSchemaMojo extends AbstractMojo {
         logger.info("Pulled {}", schemaReference);
         return sources.toString();
     }
+
+    private void loadDependenciesReferences(final String parentSchemaReference,
+                                            final Set<String> declaredReferences,
+                                            final Set<String> loadedDependenciesReferences) throws IOException, MojoExecutionException {
+        final String parentSchemaVersion = extractVersion(parentSchemaReference);
+        final URL schemaDependenciesUrl = schemaDependenciesUrl(this.schemataService.getUrl(), parentSchemaReference);
+
+        logger.info("Searching {} dependencies at {}", parentSchemaReference, schemaDependenciesUrl);
+        HttpURLConnection connection = (HttpURLConnection) schemaDependenciesUrl.openConnection();
+        connection.setRequestProperty("Accept", "text/plain, text/x-java-source");
+        connection.setDoOutput(true);
+        connection.setRequestMethod("GET");
+
+        if (connection.getResponseCode() == HTTP_OK) {
+            final List<String> dependencies =
+                    new Gson().fromJson(response(connection), List.class);
+
+            final Set<String> newReferences =
+                    dependencies.stream().filter(ref -> !declaredReferences.contains(ref) &&
+                            !loadedDependenciesReferences.contains(ref)).collect(Collectors.toSet());
+
+            for(final String reference : newReferences) {
+                final String fullReference = reference + ":" + parentSchemaVersion;
+                loadedDependenciesReferences.add(fullReference);
+                loadDependenciesReferences(fullReference, declaredReferences, loadedDependenciesReferences);
+            }
+        } else {
+            logError(connection, "Searching dependencies");
+            throw new MojoExecutionException("Could not get dependencies from " + schemaDependenciesUrl + ": "
+                    + connection.getResponseMessage() + " - " + connection.getResponseCode() +
+                    "-" + response(connection));
+        }
+    }
+
+    private Set<String> resolveSchemaReferences() throws MojoExecutionException, IOException {
+        final Set<String> dependenciesReferences = new HashSet<>();
+
+        final Set<String> declaredReferences =
+                this.schemata.stream().map(Schema::getRef).collect(Collectors.toSet());
+
+        for(final String reference : declaredReferences) {
+            loadDependenciesReferences(reference, declaredReferences, dependenciesReferences);
+        }
+        return Stream.of(declaredReferences, dependenciesReferences).flatMap(Set::stream)
+                .collect(Collectors.toSet());
+    }
+
 
     private void validateSchemaStatus(String schemaReference) throws IOException, MojoFailureException {
         URL versionResourceUrl = versionDataUrl(this.schemataService.getUrl(), schemaReference);
@@ -173,11 +227,41 @@ public class PullSchemaMojo extends AbstractMojo {
         return data;
     }
 
+    private void logError(final HttpURLConnection connection, final String pattern) throws IOException {
+        try (BufferedReader br = new BufferedReader(
+                new InputStreamReader(connection.getErrorStream(), StandardCharsets.UTF_8))) {
+            String responseLine;
+            StringBuilder response = new StringBuilder();
+            while ((responseLine = br.readLine()) != null) {
+                response.append(responseLine.trim());
+            }
+            logger.error(pattern, response.toString());
+        }
+    }
+
+    private String response(final HttpURLConnection connection) throws IOException {
+        return new BufferedReader(
+                new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))
+                .lines().collect(Collectors.joining("\n"));
+    }
+
     private URL codeResourceUrl(URL baseUrl, String schemaReference, String language) throws MalformedURLException {
         return new URL(baseUrl, String.format(SCHEMATA_CODE_RESOURCE_PATH, schemaReference, language));
     }
 
+    private URL schemaDependenciesUrl(URL baseUrl, String schemaReference) throws MalformedURLException {
+        return new URL(baseUrl, String.format(SCHEMATA_DEPENDENCIES_RESOURCE_PATH, schemaReference));
+    }
+
     private URL versionDataUrl(URL baseUrl, String schemaReference) throws MalformedURLException {
         return new URL(baseUrl, String.format(SCHEMATA_SCHEMA_VERSION_RESOURCE_PATH, schemaReference));
+    }
+
+    private String extractVersion(final String reference) {
+        final String[] parts = reference.split(":");
+        if(parts.length < 4) {
+            throw new IllegalArgumentException("Unable to extract the schema version of " + reference);
+        }
+        return parts[4];
     }
 }
