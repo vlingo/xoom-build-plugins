@@ -105,10 +105,10 @@ public class PullSchemaMojo extends AbstractMojo {
         return sources.toString();
     }
 
+    @SuppressWarnings("unchecked")
     private void loadDependenciesReferences(final String parentSchemaReference,
                                             final Set<String> declaredReferences,
                                             final Set<String> loadedDependenciesReferences) throws IOException, MojoExecutionException {
-        final String parentSchemaVersion = extractVersion(parentSchemaReference);
         final URL schemaDependenciesUrl = schemaDependenciesUrl(this.schemataService.getUrl(), parentSchemaReference);
 
         logger.info("Searching {} dependencies at {}", parentSchemaReference, schemaDependenciesUrl);
@@ -126,9 +126,8 @@ public class PullSchemaMojo extends AbstractMojo {
                             !loadedDependenciesReferences.contains(ref)).collect(Collectors.toSet());
 
             for(final String reference : newReferences) {
-                final String fullReference = reference + ":" + parentSchemaVersion;
-                loadedDependenciesReferences.add(fullReference);
-                loadDependenciesReferences(fullReference, declaredReferences, loadedDependenciesReferences);
+                loadedDependenciesReferences.add(reference);
+                loadDependenciesReferences(reference, declaredReferences, loadedDependenciesReferences);
             }
         } else {
             logError(connection, "Searching dependencies");
@@ -216,8 +215,7 @@ public class PullSchemaMojo extends AbstractMojo {
         return parts[3];
     }
 
-    private static String readString(URLConnection connection) throws IOException
-    {
+    private static String readString(URLConnection connection) throws IOException {
         String data = "";
         try (
           BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))
@@ -257,11 +255,4 @@ public class PullSchemaMojo extends AbstractMojo {
         return new URL(baseUrl, String.format(SCHEMATA_SCHEMA_VERSION_RESOURCE_PATH, schemaReference));
     }
 
-    private String extractVersion(final String reference) {
-        final String[] parts = reference.split(":");
-        if(parts.length < 4) {
-            throw new IllegalArgumentException("Unable to extract the schema version of " + reference);
-        }
-        return parts[4];
-    }
 }
