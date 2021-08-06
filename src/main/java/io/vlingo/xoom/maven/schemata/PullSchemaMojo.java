@@ -268,7 +268,6 @@ public class PullSchemaMojo extends AbstractMojo {
                 throw new MojoExecutionException("Pulling schemata failed", e);
             }
         }
-
     }
 
 }

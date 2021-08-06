@@ -157,9 +157,6 @@ public class PushSchemaMojo extends AbstractMojo {
                 throw new MojoExecutionException("Pulling schemata failed", e);
             }
         }
-
     }
-
-
 
 }
