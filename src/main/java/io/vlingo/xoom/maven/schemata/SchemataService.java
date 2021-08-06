@@ -1,6 +1,9 @@
 package io.vlingo.xoom.maven.schemata;
 
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
+import java.nio.file.Paths;
 
 public class SchemataService {
 
@@ -52,6 +55,10 @@ public class SchemataService {
 
     public void setSkipPrompt(boolean skipPrompt) {
         this.skipPrompt = skipPrompt;
+    }
+
+    public void changeURL(final URL url) throws MalformedURLException {
+        this.url = url;
     }
 
     @Override

@@ -16,6 +16,8 @@ import org.apache.maven.project.MavenProject;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -35,6 +37,9 @@ public class PushSchemaMojo extends AbstractMojo {
     @Parameter(name = "schemataService")
     private SchemataService schemataService;
 
+    @Parameter(name = "surrogateHost")
+    private String surrogateHost;
+
     @Parameter(property = "schemata")
     private List<Schema> schemata;
 
@@ -44,8 +49,10 @@ public class PushSchemaMojo extends AbstractMojo {
     private ContextAPI contextAPI;
     private SchemaAPI schemaAPI;
     private SchemaVersionAPI schemaVersionAPI;
+    private final SchemataUrlResolver schemataUrlResolver;
 
     public PushSchemaMojo() {
+        this.schemataUrlResolver = new SchemataUrlResolver();
         this.logger = io.vlingo.xoom.actors.Logger.basicLogger();
         logger.info("XOOM: Pushing project schemata to VLINGO XOOM Schemata registry.");
     }
@@ -54,6 +61,7 @@ public class PushSchemaMojo extends AbstractMojo {
     public void execute() throws MojoExecutionException {
         try {
           initializeAPI();
+          resolveSchemataURL();
           createSchemaParents();
 
           for (final Schema schema : this.schemata) {
@@ -137,5 +145,21 @@ public class PushSchemaMojo extends AbstractMojo {
     private int resolveServiceReadinessInterval() {
         return schemataService != null && schemataService.getHierarchicalCascade() ? 1500 : 0;
     }
+
+    private void resolveSchemataURL() throws MojoExecutionException {
+        if(schemataUrlResolver.useSurrogateURl(project)) {
+            try {
+                final URL actualURL = schemataService.getUrl();
+                final URL surrogateURL = schemataUrlResolver.resolve(actualURL, project);
+                schemataService.changeURL(surrogateURL);
+                logger.info("Using surrogate Schemata URL: " + surrogateURL);
+            } catch (MalformedURLException e) {
+                throw new MojoExecutionException("Pulling schemata failed", e);
+            }
+        }
+
+    }
+
+
 
 }
