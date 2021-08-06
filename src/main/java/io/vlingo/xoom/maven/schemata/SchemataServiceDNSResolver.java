@@ -13,31 +13,31 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Optional;
 
-public class SchemataUrlResolver {
+public class SchemataServiceDNSResolver {
 
-  private static final String PROFILE_ID = "schemata-integration";
-  private static final String SCHEMATA_URL = "schemata-url";
+  private static final String PROFILE_ID = "schemata-service";
+  private static final String SERVICE_NAME = "name";
 
   public URL resolve(final URL actualURL,
                      final MavenProject mavenProject) throws MalformedURLException {
     final Optional<String> surrogateURL =
-            findSurrogateSchemataURL(mavenProject);
+            findServiceName(mavenProject);
 
     return surrogateURL.isPresent() ? new URL(surrogateURL.get()) : actualURL;
   }
 
-  public boolean useSurrogateURl(final MavenProject mavenProject) {
-    return findSurrogateSchemataURL(mavenProject).isPresent();
+  public boolean useDNS(final MavenProject mavenProject) {
+    return findServiceName(mavenProject).isPresent();
   }
 
-  private Optional<String> findSurrogateSchemataURL(final MavenProject mavenProject) {
+  private Optional<String> findServiceName(final MavenProject mavenProject) {
     final Optional<Profile> optionalProfile =
             mavenProject.getActiveProfiles().stream()
                     .filter(profile -> profile.getId().equals(PROFILE_ID))
                     .findFirst();
 
-    if(optionalProfile.isPresent() && optionalProfile.get().getProperties().containsKey(SCHEMATA_URL)) {
-      return Optional.of(optionalProfile.get().getProperties().getProperty(SCHEMATA_URL));
+    if(optionalProfile.isPresent() && optionalProfile.get().getProperties().containsKey(SERVICE_NAME)) {
+      return Optional.of(optionalProfile.get().getProperties().getProperty(SERVICE_NAME));
     }
 
     return Optional.empty();

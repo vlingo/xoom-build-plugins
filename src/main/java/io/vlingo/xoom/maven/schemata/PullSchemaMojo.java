@@ -28,7 +28,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -48,7 +47,7 @@ public class PullSchemaMojo extends AbstractMojo {
     public static final String SCHEMATA_REFERENCE_SEPARATOR = ":";
     public static final String SCHEMATA_DEPENDENCIES_RESOURCE_PATH = "/api/schemas/%s/dependencies";
     private Pattern PACKAGE_NAME_PATTERN = Pattern.compile("package (.+);.*");
-    private final SchemataUrlResolver schemataUrlResolver;
+    private final SchemataServiceDNSResolver schemataServiceDNSResolver;
 
     @Parameter(readonly = true, defaultValue = "${project}")
     private MavenProject project;
@@ -65,7 +64,7 @@ public class PullSchemaMojo extends AbstractMojo {
     private final io.vlingo.xoom.actors.Logger logger;
 
     public PullSchemaMojo() {
-        this.schemataUrlResolver = new SchemataUrlResolver();
+        this.schemataServiceDNSResolver = new SchemataServiceDNSResolver();
         this.logger = io.vlingo.xoom.actors.Logger.basicLogger();
         logger.info("XOOM: Pulling code generated from VLINGO XOOM Schemata registry.");
     }
@@ -258,10 +257,10 @@ public class PullSchemaMojo extends AbstractMojo {
     }
 
     private void resolveSchemataURL() throws MojoExecutionException {
-        if(schemataUrlResolver.useSurrogateURl(project)) {
+        if(schemataServiceDNSResolver.useDNS(project)) {
             try {
                 final URL actualURL = schemataService.getUrl();
-                final URL surrogateURL = schemataUrlResolver.resolve(actualURL, project);
+                final URL surrogateURL = schemataServiceDNSResolver.resolve(actualURL, project);
                 schemataService.changeURL(surrogateURL);
                 logger.info("Using surrogate Schemata URL: " + surrogateURL);
             } catch (MalformedURLException e) {

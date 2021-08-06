@@ -49,10 +49,10 @@ public class PushSchemaMojo extends AbstractMojo {
     private ContextAPI contextAPI;
     private SchemaAPI schemaAPI;
     private SchemaVersionAPI schemaVersionAPI;
-    private final SchemataUrlResolver schemataUrlResolver;
+    private final SchemataServiceDNSResolver schemataServiceDNSResolver;
 
     public PushSchemaMojo() {
-        this.schemataUrlResolver = new SchemataUrlResolver();
+        this.schemataServiceDNSResolver = new SchemataServiceDNSResolver();
         this.logger = io.vlingo.xoom.actors.Logger.basicLogger();
         logger.info("XOOM: Pushing project schemata to VLINGO XOOM Schemata registry.");
     }
@@ -147,10 +147,10 @@ public class PushSchemaMojo extends AbstractMojo {
     }
 
     private void resolveSchemataURL() throws MojoExecutionException {
-        if(schemataUrlResolver.useSurrogateURl(project)) {
+        if(schemataServiceDNSResolver.useDNS(project)) {
             try {
                 final URL actualURL = schemataService.getUrl();
-                final URL surrogateURL = schemataUrlResolver.resolve(actualURL, project);
+                final URL surrogateURL = schemataServiceDNSResolver.resolve(actualURL, project);
                 schemataService.changeURL(surrogateURL);
                 logger.info("Using surrogate Schemata URL: " + surrogateURL);
             } catch (MalformedURLException e) {
