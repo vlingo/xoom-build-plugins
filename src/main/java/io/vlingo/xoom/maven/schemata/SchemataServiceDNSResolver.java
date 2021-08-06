@@ -32,9 +32,10 @@ public class SchemataServiceDNSResolver {
         return new URL("http", serviceName, optionalPort.get(), "");
       }
       return new URL("http", optionalServiceName.get(), "");
+    } else {
+      return actualURL;
     }
 
-    return optionalServiceName.isPresent() ? new URL("http", optionalServiceName.get(), "") : actualURL;
   }
 
   public boolean useDNS(final MavenProject mavenProject) {
