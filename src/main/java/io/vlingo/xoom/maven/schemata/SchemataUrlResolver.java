@@ -15,7 +15,7 @@ import java.util.Optional;
 
 public class SchemataUrlResolver {
 
-  private static final String DOCKER_PROFILE_ID = "docker";
+  private static final String PROFILE_ID = "schemata-integration";
   private static final String SCHEMATA_URL = "schemata-url";
 
   public URL resolve(final URL actualURL,
@@ -33,7 +33,7 @@ public class SchemataUrlResolver {
   private Optional<String> findSurrogateSchemataURL(final MavenProject mavenProject) {
     final Optional<Profile> optionalProfile =
             mavenProject.getActiveProfiles().stream()
-                    .filter(profile -> profile.getId().equals(DOCKER_PROFILE_ID))
+                    .filter(profile -> profile.getId().equals(PROFILE_ID))
                     .findFirst();
 
     if(optionalProfile.isPresent() && optionalProfile.get().getProperties().containsKey(SCHEMATA_URL)) {
