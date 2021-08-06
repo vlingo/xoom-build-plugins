@@ -20,10 +20,10 @@ public class SchemataServiceDNSResolver {
 
   public URL resolve(final URL actualURL,
                      final MavenProject mavenProject) throws MalformedURLException {
-    final Optional<String> surrogateURL =
+    final Optional<String> serviceName =
             findServiceName(mavenProject);
 
-    return surrogateURL.isPresent() ? new URL(surrogateURL.get()) : actualURL;
+    return serviceName.isPresent() ? new URL("http", serviceName.get(), "") : actualURL;
   }
 
   public boolean useDNS(final MavenProject mavenProject) {
