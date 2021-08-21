@@ -59,6 +59,14 @@ public class PushSchemaMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException {
+        if (schemataService != null) {
+            pushSchemas();
+        } else {
+            logger.warn("There's no schema configured to push.");
+        }
+    }
+
+    private void pushSchemas() throws MojoExecutionException {
         try {
           initializeAPI();
           resolveSchemataURL();

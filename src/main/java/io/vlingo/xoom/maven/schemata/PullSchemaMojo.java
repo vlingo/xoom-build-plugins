@@ -71,6 +71,14 @@ public class PullSchemaMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
+        if (schemataService != null) {
+            pullSources();
+        } else {
+            logger.warn("There's no schema configured to pull.");
+        }
+    }
+
+    private void pullSources() throws MojoExecutionException, MojoFailureException {
         resolveSchemataURL();
         logger.info(schemataService.toString());
         this.project.addCompileSourceRoot(this.outputDirectory.toString());
