@@ -15,7 +15,7 @@ See xoom-build-plugins-test for examples.
     <dependency>
       <groupId>io.vlingo.xoom</groupId>
       <artifactId>xoom-build-plugins</artifactId>
-      <version>1.10.0</version>
+      <version>1.10.1</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>
@@ -23,7 +23,7 @@ See xoom-build-plugins-test for examples.
 
 ```gradle
 dependencies {
-    compile 'io.vlingo.xoom:xoom-build-plugins:1.10.0'
+    compile 'io.vlingo.xoom:xoom-build-plugins:1.10.1'
 }
 ```
 
